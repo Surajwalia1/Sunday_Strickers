@@ -336,8 +336,7 @@ export default function Players() {
         photoUrl = await handleFileUpload(selectedFile);
       }
 
-      const updatedPlayer: Player = {
-        ...editingPlayer,
+      const playerData = {
         firstName: formData.firstName,
         lastName: formData.lastName.toUpperCase(),
         nickname: formData.nickname,
@@ -355,6 +354,10 @@ export default function Players() {
         quote: formData.quote,
       };
 
+      const updatedPlayer = await api.updatePlayer(
+        editingPlayer.id,
+        playerData,
+      );
       setPlayers(
         players.map((p) => (p.id === editingPlayer.id ? updatedPlayer : p)),
       );
@@ -362,7 +365,7 @@ export default function Players() {
       resetForm();
     } catch (error) {
       console.error("Failed to update player:", error);
-      // You could add a toast notification here
+      setError("Failed to update player");
     }
   };
 
