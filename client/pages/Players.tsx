@@ -498,6 +498,32 @@ export default function Players() {
       </div>
 
       <div>
+        <Label htmlFor="photo" className="text-white">
+          Photo URL
+        </Label>
+        <Input
+          id="photo"
+          value={formData.photo}
+          onChange={(e) => setFormData({ ...formData, photo: e.target.value })}
+          placeholder="https://example.com/photo.jpg"
+          className="bg-white/10 border-white/20 text-white"
+        />
+        {formData.photo && (
+          <div className="mt-2">
+            <img
+              src={formData.photo}
+              alt="Preview"
+              className="w-16 h-16 object-cover rounded-lg border border-white/20"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = "none";
+              }}
+            />
+          </div>
+        )}
+      </div>
+
+      <div>
         <Label htmlFor="bio" className="text-white">
           Bio
         </Label>
