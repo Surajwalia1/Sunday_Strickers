@@ -574,26 +574,42 @@ export default function Players() {
 
       <div>
         <Label htmlFor="photo" className="text-white">
-          Photo URL
+          Player Photo
         </Label>
         <Input
           id="photo"
-          value={formData.photo}
-          onChange={(e) => setFormData({ ...formData, photo: e.target.value })}
-          placeholder="https://example.com/photo.jpg"
-          className="bg-white/10 border-white/20 text-white"
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              setSelectedFile(file);
+              // Create preview URL
+              const previewUrl = URL.createObjectURL(file);
+              setFormData({ ...formData, photo: previewUrl });
+            }
+          }}
+          className="bg-white/10 border-white/20 text-white file:bg-football-blue-500 file:border-0 file:text-white file:rounded-md file:px-3 file:py-1 file:mr-3"
         />
-        {formData.photo && (
+        <div className="text-xs text-white/60 mt-1">
+          Upload an image file (max 5MB)
+        </div>
+        {(formData.photo || selectedFile) && (
           <div className="mt-2">
             <img
               src={formData.photo}
               alt="Preview"
-              className="w-16 h-16 object-cover rounded-lg border border-white/20"
+              className="w-20 h-20 object-cover rounded-lg border border-white/20"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.style.display = "none";
               }}
             />
+            {uploading && (
+              <div className="text-xs text-football-blue-400 mt-1">
+                Uploading...
+              </div>
+            )}
           </div>
         )}
       </div>
