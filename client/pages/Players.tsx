@@ -207,31 +207,47 @@ export default function Players() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-football-blue-50 to-football-orange-50">
+    <div className="min-h-screen bg-black text-white overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 pointer-events-none">
+        {/* Floating Particles */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-football-blue-500 rounded-full animate-ping"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-football-orange-500 rounded-full animate-pulse delay-300"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-football-maroon-500 rounded-full animate-bounce delay-500"></div>
+        <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-football-blue-400 rounded-full animate-ping delay-700"></div>
+
+        {/* Large Gradient Orbs */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-football-blue-500/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-br from-football-orange-500/15 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-40 left-32 w-80 h-80 bg-gradient-to-br from-football-maroon-500/20 to-transparent rounded-full blur-3xl animate-pulse delay-2000"></div>
+      </div>
+
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-border sticky top-0 z-50">
+      <nav className="bg-black/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-football-blue-500 to-football-maroon-500 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-football-blue-500 to-football-maroon-500 rounded-full flex items-center justify-center animate-pulse">
                 <Trophy className="w-4 h-4 text-white" />
               </div>
-              <span className="text-xl font-bold text-foreground">
+              <span className="text-xl font-bold text-white">
                 The Sunday Game
               </span>
             </div>
             <div className="flex items-center space-x-6">
               <Link
                 to="/"
-                className="text-muted-foreground hover:text-primary transition-colors font-medium"
+                className="text-white/70 hover:text-football-blue-400 transition-all duration-300 font-medium relative group"
               >
                 Home
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-football-blue-400 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link
                 to="/players"
-                className="text-foreground hover:text-primary transition-colors font-medium"
+                className="text-white hover:text-football-orange-400 transition-all duration-300 font-medium relative group"
               >
                 Players
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-football-orange-400 transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </div>
           </div>
@@ -239,14 +255,14 @@ export default function Players() {
       </nav>
 
       {/* Page Header */}
-      <section className="py-12">
+      <section className="py-12 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center space-x-4 mb-8">
             <Link to="/">
               <Button
                 variant="ghost"
                 size="sm"
-                className="hover:bg-football-blue-100"
+                className="text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Home
@@ -255,10 +271,10 @@ export default function Players() {
           </div>
 
           <div className="text-center space-y-4 mb-12">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight bg-gradient-to-r from-football-blue-600 to-football-maroon-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight bg-gradient-to-r from-football-blue-400 to-football-maroon-400 bg-clip-text text-transparent">
               Sunday Warriors
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-white/70 max-w-2xl mx-auto">
               Meet the legends who show up every week ⚽
             </p>
           </div>
@@ -269,10 +285,10 @@ export default function Players() {
               <button
                 key={position}
                 onClick={() => setSelectedPosition(position)}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
                   selectedPosition === position
-                    ? "bg-football-blue-500 text-white shadow-lg"
-                    : "bg-white/80 text-football-blue-700 hover:bg-football-blue-100"
+                    ? "bg-gradient-to-r from-football-blue-500 to-football-maroon-500 text-white shadow-lg"
+                    : "bg-white/10 backdrop-blur-md text-white/70 hover:bg-white/20 hover:text-white"
                 }`}
               >
                 {position}
@@ -286,7 +302,7 @@ export default function Players() {
           {/* Position Title */}
           {selectedPosition !== "ALL" && (
             <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="text-3xl md:text-4xl font-bold text-white">
                 {selectedPosition}
               </h2>
             </div>
@@ -295,13 +311,13 @@ export default function Players() {
       </section>
 
       {/* Players Grid */}
-      <section className="pb-20">
+      <section className="pb-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPlayers.map((player) => (
               <Card
                 key={player.id}
-                className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+                className="group overflow-hidden border-0 bg-white/5 backdrop-blur-md border border-white/10 shadow-lg hover:shadow-2xl hover:shadow-football-blue-500/20 transition-all duration-500 transform hover:-translate-y-2"
               >
                 <div
                   className={`relative h-80 ${getGradientByPosition(player.position)}`}
@@ -356,7 +372,7 @@ export default function Players() {
 
                 <CardContent className="p-6">
                   <div className="space-y-4">
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-white/70 leading-relaxed">
                       {player.bio}
                     </p>
 
@@ -364,7 +380,7 @@ export default function Players() {
                     <div className="flex items-center justify-between">
                       <Badge
                         variant="outline"
-                        className="border-football-orange-200 text-football-orange-600"
+                        className="border-football-orange-400/30 text-football-orange-400 bg-football-orange-500/10"
                       >
                         {player.team}
                       </Badge>
@@ -373,7 +389,7 @@ export default function Players() {
                         variant="ghost"
                         size="sm"
                         onClick={() => toggleCard(player.id)}
-                        className="text-football-blue-600 hover:text-football-blue-700 hover:bg-football-blue-50"
+                        className="text-football-blue-400 hover:text-football-blue-300 hover:bg-football-blue-500/10"
                       >
                         {expandedCards.has(player.id) ? (
                           <>
@@ -389,47 +405,47 @@ export default function Players() {
 
                     {/* Expanded Content */}
                     {expandedCards.has(player.id) && (
-                      <div className="space-y-4 pt-4 border-t border-border animate-in slide-in-from-top-2 duration-300">
+                      <div className="space-y-4 pt-4 border-t border-white/10 animate-in slide-in-from-top-2 duration-300">
                         <div className="grid grid-cols-2 gap-4">
-                          <div className="text-center p-3 bg-football-blue-50 rounded-lg">
-                            <div className="text-2xl font-bold text-football-blue-600">
+                          <div className="text-center p-3 bg-football-blue-500/20 rounded-lg border border-football-blue-500/30">
+                            <div className="text-2xl font-bold text-football-blue-400">
                               {player.appearances}
                             </div>
-                            <div className="text-xs text-football-blue-500">
+                            <div className="text-xs text-football-blue-300">
                               APPEARANCES
                             </div>
                           </div>
-                          <div className="text-center p-3 bg-football-maroon-50 rounded-lg">
-                            <div className="text-2xl font-bold text-football-maroon-600">
+                          <div className="text-center p-3 bg-football-maroon-500/20 rounded-lg border border-football-maroon-500/30">
+                            <div className="text-2xl font-bold text-football-maroon-400">
                               {player.goals}
                             </div>
-                            <div className="text-xs text-football-maroon-500">
+                            <div className="text-xs text-football-maroon-300">
                               GOALS
                             </div>
                           </div>
                         </div>
 
                         <div className="space-y-3">
-                          <div className="p-3 bg-football-orange-50 rounded-lg">
+                          <div className="p-3 bg-football-orange-500/20 rounded-lg border border-football-orange-500/30">
                             <div className="flex items-center space-x-2 mb-2">
-                              <Star className="w-4 h-4 text-football-orange-500" />
-                              <span className="font-medium text-football-orange-700">
+                              <Star className="w-4 h-4 text-football-orange-400" />
+                              <span className="font-medium text-football-orange-300">
                                 Fun Fact
                               </span>
                             </div>
-                            <p className="text-football-orange-600 text-sm">
+                            <p className="text-football-orange-200 text-sm">
                               {player.funFact}
                             </p>
                           </div>
 
-                          <div className="p-3 bg-gray-50 rounded-lg">
+                          <div className="p-3 bg-white/10 rounded-lg border border-white/20">
                             <div className="flex items-center space-x-2 mb-2">
                               <span className="text-2xl">💬</span>
-                              <span className="font-medium text-gray-700">
+                              <span className="font-medium text-white/80">
                                 Quote
                               </span>
                             </div>
-                            <p className="text-gray-600 text-sm italic">
+                            <p className="text-white/70 text-sm italic">
                               "{player.quote}"
                             </p>
                           </div>
@@ -444,11 +460,11 @@ export default function Players() {
 
           {filteredPlayers.length === 0 && (
             <div className="text-center py-20">
-              <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">
+              <Users className="w-16 h-16 text-white/50 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">
                 No players found
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-white/70">
                 Try selecting a different position.
               </p>
             </div>
@@ -457,18 +473,19 @@ export default function Players() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-football-blue-50 to-football-maroon-50 py-12">
+      <footer className="bg-black/50 backdrop-blur-md border-t border-white/10 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-6 h-6 bg-gradient-to-br from-football-blue-500 to-football-maroon-500 rounded-full flex items-center justify-center">
+            <div className="w-6 h-6 bg-gradient-to-br from-football-blue-500 to-football-maroon-500 rounded-full flex items-center justify-center animate-pulse">
               <Trophy className="w-3 h-3 text-white" />
             </div>
-            <span className="text-lg font-bold text-foreground">
+            <span className="text-lg font-bold text-white">
               The Sunday Game
             </span>
           </div>
-          <p className="text-muted-foreground">
-            Made with ❤️ for the Sunday football community
+          <p className="text-white/70">
+            Made with <span className="text-red-400 animate-pulse">❤️</span> for
+            the Sunday football community
           </p>
         </div>
       </footer>
