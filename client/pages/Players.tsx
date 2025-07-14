@@ -180,7 +180,7 @@ const initialPlayers: Player[] = [
     bio: "Clinical finisher who lives for goals.",
     appearances: 41,
     goals: 28,
-    funFact: "Loves scoring volleys from impossible angles ����",
+    funFact: "Loves scoring volleys from impossible angles 🎯",
     quote: "Give me half a chance and I'll bury it!",
   },
   {
@@ -416,33 +416,45 @@ export default function Players() {
     });
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (!editingPlayer) return;
 
-    const updatedPlayer: Player = {
-      ...editingPlayer,
-      firstName: formData.firstName,
-      lastName: formData.lastName.toUpperCase(),
-      nickname: formData.nickname,
-      position: formData.position,
-      positionDisplay: formData.position.toLowerCase().replace("_", " "),
-      team: formData.team,
-      jerseyNumber: formData.jerseyNumber || undefined,
-      photo: formData.photo,
-      bio: formData.bio,
-      appearances: formData.appearances,
-      goals: formData.goals,
-      saves: formData.saves,
-      cleanSheets: formData.cleanSheets,
-      funFact: formData.funFact,
-      quote: formData.quote,
-    };
+    try {
+      let photoUrl = formData.photo;
 
-    setPlayers(
-      players.map((p) => (p.id === editingPlayer.id ? updatedPlayer : p)),
-    );
-    setEditingPlayer(null);
-    resetForm();
+      // Upload file if one is selected
+      if (selectedFile) {
+        photoUrl = await handleFileUpload(selectedFile);
+      }
+
+      const updatedPlayer: Player = {
+        ...editingPlayer,
+        firstName: formData.firstName,
+        lastName: formData.lastName.toUpperCase(),
+        nickname: formData.nickname,
+        position: formData.position,
+        positionDisplay: formData.position.toLowerCase().replace("_", " "),
+        team: formData.team,
+        jerseyNumber: formData.jerseyNumber || undefined,
+        photo: photoUrl,
+        bio: formData.bio,
+        appearances: formData.appearances,
+        goals: formData.goals,
+        saves: formData.saves,
+        cleanSheets: formData.cleanSheets,
+        funFact: formData.funFact,
+        quote: formData.quote,
+      };
+
+      setPlayers(
+        players.map((p) => (p.id === editingPlayer.id ? updatedPlayer : p)),
+      );
+      setEditingPlayer(null);
+      resetForm();
+    } catch (error) {
+      console.error("Failed to update player:", error);
+      // You could add a toast notification here
+    }
   };
 
   const handleDeletePlayer = (playerId: string) => {
