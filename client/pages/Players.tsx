@@ -175,6 +175,25 @@ export default function Players() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  // Fetch players on component mount
+  useEffect(() => {
+    const fetchPlayers = async () => {
+      try {
+        setLoading(true);
+        const playersData = await api.getAllPlayers();
+        setPlayers(playersData);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching players:", err);
+        setError("Failed to load players");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlayers();
+  }, []);
+
   const filteredPlayers = players.filter((player) => {
     const positionMatch =
       selectedPosition === "ALL" || player.position === selectedPosition;
