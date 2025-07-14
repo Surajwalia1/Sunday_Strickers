@@ -143,7 +143,9 @@ const getTeamColor = (team: string) => {
 };
 
 export default function Players() {
-  const [players, setPlayers] = useState<Player[]>(initialPlayers);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedPosition, setSelectedPosition] = useState("ALL");
   const [selectedTeam, setSelectedTeam] = useState("ALL");
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
