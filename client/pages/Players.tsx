@@ -172,7 +172,7 @@ export default function Players() {
     quote: "",
   });
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
   // Fetch players on component mount
@@ -267,7 +267,7 @@ export default function Players() {
     }
   };
 
-  const handleAddPlayer = async () => {
+    const handleAddPlayer = async () => {
     try {
       let photoUrl = formData.photo;
 
@@ -325,7 +325,7 @@ export default function Players() {
     });
   };
 
-  const handleSaveEdit = async () => {
+    const handleSaveEdit = async () => {
     if (!editingPlayer) return;
 
     try {
@@ -354,10 +354,7 @@ export default function Players() {
         quote: formData.quote,
       };
 
-      const updatedPlayer = await api.updatePlayer(
-        editingPlayer.id,
-        playerData,
-      );
+      const updatedPlayer = await api.updatePlayer(editingPlayer.id, playerData);
       setPlayers(
         players.map((p) => (p.id === editingPlayer.id ? updatedPlayer : p)),
       );
@@ -369,7 +366,7 @@ export default function Players() {
     }
   };
 
-  const handleDeletePlayer = async (playerId: string) => {
+    const handleDeletePlayer = async (playerId: string) => {
     try {
       await api.deletePlayer(playerId);
       setPlayers(players.filter((p) => p.id !== playerId));
@@ -769,10 +766,35 @@ export default function Players() {
         </div>
       </section>
 
-      {/* Players Grid */}
+            {/* Players Grid */}
       <section className="pb-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Loading State */}
+          {loading && (
+            <div className="text-center py-20">
+              <div className="animate-spin w-8 h-8 border-2 border-football-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+              <p className="text-white/70">Loading players...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div className="text-center py-20">
+              <div className="bg-red-500/20 border border-red-500/40 rounded-lg p-6 max-w-md mx-auto">
+                <p className="text-red-300 mb-4">{error}</p>
+                <Button
+                  onClick={() => window.location.reload()}
+                  className="bg-red-500 hover:bg-red-600"
+                >
+                  Retry
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Players Grid */}
+          {!loading && !error && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPlayers.map((player) => (
               <div key={player.id} className="space-y-4">
                 {/* Barcelona-style Player Card */}
