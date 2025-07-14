@@ -911,7 +911,7 @@ export default function Players() {
                     </div>
 
                     {/* Hover State - Stats Display */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="px-6 pb-6 pt-16">
                         {/* Stats Grid */}
                         <div className="grid grid-cols-3 gap-4 text-center text-white">
