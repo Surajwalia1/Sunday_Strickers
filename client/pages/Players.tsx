@@ -151,7 +151,6 @@ export default function Players() {
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
   const [isAddPlayerOpen, setIsAddPlayerOpen] = useState(false);
   const [editingPlayer, setEditingPlayer] = useState<Player | null>(null);
-  const [deletingPlayer, setDeletingPlayer] = useState<Player | null>(null);
 
   // Form state for adding/editing players
   const [formData, setFormData] = useState({
@@ -172,7 +171,7 @@ export default function Players() {
     quote: "",
   });
 
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
   // Fetch players on component mount
@@ -267,7 +266,7 @@ export default function Players() {
     }
   };
 
-    const handleAddPlayer = async () => {
+  const handleAddPlayer = async () => {
     try {
       let photoUrl = formData.photo;
 
@@ -325,7 +324,7 @@ export default function Players() {
     });
   };
 
-    const handleSaveEdit = async () => {
+  const handleSaveEdit = async () => {
     if (!editingPlayer) return;
 
     try {
@@ -354,7 +353,10 @@ export default function Players() {
         quote: formData.quote,
       };
 
-      const updatedPlayer = await api.updatePlayer(editingPlayer.id, playerData);
+      const updatedPlayer = await api.updatePlayer(
+        editingPlayer.id,
+        playerData,
+      );
       setPlayers(
         players.map((p) => (p.id === editingPlayer.id ? updatedPlayer : p)),
       );
@@ -366,11 +368,10 @@ export default function Players() {
     }
   };
 
-    const handleDeletePlayer = async (playerId: string) => {
+  const handleDeletePlayer = async (playerId: string) => {
     try {
       await api.deletePlayer(playerId);
       setPlayers(players.filter((p) => p.id !== playerId));
-      setDeletingPlayer(null);
       // Close expanded card if it was expanded
       const newExpanded = new Set(expandedCards);
       newExpanded.delete(playerId);
@@ -766,7 +767,7 @@ export default function Players() {
         </div>
       </section>
 
-            {/* Players Grid */}
+      {/* Players Grid */}
       <section className="pb-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Loading State */}
@@ -795,283 +796,282 @@ export default function Players() {
           {/* Players Grid */}
           {!loading && !error && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPlayers.map((player) => (
-              <div key={player.id} className="space-y-4">
-                {/* Barcelona-style Player Card */}
-                <div
-                  className={`relative h-96 rounded-lg overflow-hidden cursor-pointer group ${getGradientByPosition(player.position)} shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-1`}
-                >
-                  {/* Player Image */}
-                  <div className="absolute inset-0">
-                    <img
-                      src={player.photo}
-                      alt={player.name}
-                      className="w-full h-full object-cover object-center transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  </div>
-
-                  {/* Jersey Number */}
-                  {player.jerseyNumber && (
-                    <div className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">
-                        {player.jerseyNumber}
-                      </span>
+              {filteredPlayers.map((player) => (
+                <div key={player.id} className="space-y-4">
+                  {/* Barcelona-style Player Card */}
+                  <div
+                    className={`relative h-96 rounded-lg overflow-hidden cursor-pointer group ${getGradientByPosition(player.position)} shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-1`}
+                  >
+                    {/* Player Image */}
+                    <div className="absolute inset-0">
+                      <img
+                        src={player.photo}
+                        alt={player.name}
+                        className="w-full h-full object-cover object-center transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                     </div>
-                  )}
 
-                  {/* Team Badge */}
-                  <div className="absolute top-4 left-4">
-                    <Badge className={getTeamColor(player.team)}>
-                      {player.team}
-                    </Badge>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="absolute top-4 right-16 flex space-x-2">
-                    {/* Edit Button */}
-                    <Dialog
-                      open={editingPlayer?.id === player.id}
-                      onOpenChange={(open) => !open && setEditingPlayer(null)}
-                    >
-                      <DialogTrigger asChild>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleEditPlayer(player)}
-                          className="w-8 h-8 p-0 bg-white/20 backdrop-blur-md hover:bg-white/30"
-                        >
-                          <Edit3 className="w-4 h-4 text-white" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
-                        <DialogHeader>
-                          <DialogTitle className="text-white">
-                            Edit Player Details
-                          </DialogTitle>
-                        </DialogHeader>
-                        <PlayerForm isEdit={true} />
-                      </DialogContent>
-                    </Dialog>
-
-                    {/* Delete Button */}
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="w-8 h-8 p-0 bg-red-500/20 backdrop-blur-md hover:bg-red-500/40"
-                        >
-                          <Trash2 className="w-4 h-4 text-white" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent className="bg-black/90 border-white/20">
-                        <AlertDialogHeader>
-                          <AlertDialogTitle className="text-white">
-                            Delete Player
-                          </AlertDialogTitle>
-                          <AlertDialogDescription className="text-white/70">
-                            Are you sure you want to delete{" "}
-                            <span className="font-semibold text-white">
-                              {player.firstName} {player.lastName}
-                            </span>
-                            ? This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-                            Cancel
-                          </AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleDeletePlayer(player.id)}
-                            className="bg-red-500 hover:bg-red-600 text-white"
-                          >
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-
-                  {/* Default State - Name and Position (Always Visible) */}
-                  <div className="absolute bottom-6 left-6 right-6 text-white transition-all duration-300">
-                    <div className="mb-2">
-                      <div className="text-lg font-light text-white/90">
-                        {player.firstName}
+                    {/* Jersey Number */}
+                    {player.jerseyNumber && (
+                      <div className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
+                        <span className="text-white font-bold text-lg">
+                          {player.jerseyNumber}
+                        </span>
                       </div>
-                      <div className="text-2xl font-black uppercase tracking-wide leading-tight">
-                        {player.lastName}
-                      </div>
-                    </div>
-                    <div className="text-sm text-white/80 mb-4">
-                      {player.positionDisplay}
-                    </div>
-                  </div>
+                    )}
 
-                  {/* Hover State - Stats Display */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-                    <div className="px-6 pb-6 pt-16">
-                      {/* Stats Grid */}
-                      <div className="grid grid-cols-3 gap-4 text-center text-white">
-                        <div>
-                          <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
-                            Sunday Appearances
-                          </div>
-                          <div className="text-2xl font-bold">
-                            {player.appearances}
-                          </div>
-                          <div className="text-xs text-white/50">
-                            2024 Season
-                          </div>
-                          <div className="text-xs text-orange-400 font-semibold">
-                            0
-                          </div>
-                        </div>
-
-                        {player.position === "GOALKEEPERS" ? (
-                          <>
-                            <div>
-                              <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
-                                Sunday Clean Sheets
-                              </div>
-                              <div className="text-2xl font-bold">
-                                {player.cleanSheets || 0}
-                              </div>
-                              <div className="text-xs text-white/50">
-                                2024 Season
-                              </div>
-                              <div className="text-xs text-orange-400 font-semibold">
-                                0
-                              </div>
-                            </div>
-                            <div>
-                              <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
-                                Sunday Saves
-                              </div>
-                              <div className="text-2xl font-bold">
-                                {player.saves || 0}
-                              </div>
-                              <div className="text-xs text-white/50">
-                                2024 Season
-                              </div>
-                              <div className="text-xs text-orange-400 font-semibold">
-                                0
-                              </div>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div>
-                              <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
-                                Sunday Goals
-                              </div>
-                              <div className="text-2xl font-bold">
-                                {player.goals}
-                              </div>
-                              <div className="text-xs text-white/50">
-                                2024 Season
-                              </div>
-                              <div className="text-xs text-orange-400 font-semibold">
-                                0
-                              </div>
-                            </div>
-                            <div>
-                              <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
-                                Sunday Vibes
-                              </div>
-                              <div className="text-2xl font-bold">100</div>
-                              <div className="text-xs text-white/50">
-                                2024 Season
-                              </div>
-                              <div className="text-xs text-orange-400 font-semibold">
-                                0
-                              </div>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Read More Section (Below Card) */}
-                <Card className="bg-white/5 backdrop-blur-md border border-white/10">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
+                    {/* Team Badge */}
+                    <div className="absolute top-4 left-4">
                       <Badge className={getTeamColor(player.team)}>
                         {player.team}
                       </Badge>
-
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleCard(player.id)}
-                        className="text-football-blue-400 hover:text-football-blue-300 hover:bg-football-blue-500/10"
-                      >
-                        {expandedCards.has(player.id) ? (
-                          <>
-                            Less <ChevronUp className="w-4 h-4 ml-1" />
-                          </>
-                        ) : (
-                          <>
-                            Read More <ChevronDown className="w-4 h-4 ml-1" />
-                          </>
-                        )}
-                      </Button>
                     </div>
 
-                    {/* Expanded Content */}
-                    {expandedCards.has(player.id) && (
-                      <div className="space-y-4 pt-4 border-t border-white/10 animate-in slide-in-from-top-2 duration-300">
-                        <p className="text-white/70 leading-relaxed">
-                          {player.bio}
-                        </p>
+                    {/* Action Buttons */}
+                    <div className="absolute top-4 right-16 flex space-x-2">
+                      {/* Edit Button */}
+                      <Dialog
+                        open={editingPlayer?.id === player.id}
+                        onOpenChange={(open) => !open && setEditingPlayer(null)}
+                      >
+                        <DialogTrigger asChild>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleEditPlayer(player)}
+                            className="w-8 h-8 p-0 bg-white/20 backdrop-blur-md hover:bg-white/30"
+                          >
+                            <Edit3 className="w-4 h-4 text-white" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
+                          <DialogHeader>
+                            <DialogTitle className="text-white">
+                              Edit Player Details
+                            </DialogTitle>
+                          </DialogHeader>
+                          <PlayerForm isEdit={true} />
+                        </DialogContent>
+                      </Dialog>
 
-                        <div className="space-y-3">
-                          <div className="p-3 bg-football-orange-500/20 rounded-lg border border-football-orange-500/30">
-                            <div className="flex items-center space-x-2 mb-2">
-                              <Star className="w-4 h-4 text-football-orange-400" />
-                              <span className="font-medium text-football-orange-300">
-                                Fun Fact
+                      {/* Delete Button */}
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="w-8 h-8 p-0 bg-red-500/20 backdrop-blur-md hover:bg-red-500/40"
+                          >
+                            <Trash2 className="w-4 h-4 text-white" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent className="bg-black/90 border-white/20">
+                          <AlertDialogHeader>
+                            <AlertDialogTitle className="text-white">
+                              Delete Player
+                            </AlertDialogTitle>
+                            <AlertDialogDescription className="text-white/70">
+                              Are you sure you want to delete{" "}
+                              <span className="font-semibold text-white">
+                                {player.firstName} {player.lastName}
                               </span>
-                            </div>
-                            <p className="text-football-orange-200 text-sm">
-                              {player.funFact}
-                            </p>
-                          </div>
+                              ? This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+                              Cancel
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeletePlayer(player.id)}
+                              className="bg-red-500 hover:bg-red-600 text-white"
+                            >
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
 
-                          <div className="p-3 bg-white/10 rounded-lg border border-white/20">
-                            <div className="flex items-center space-x-2 mb-2">
-                              <span className="text-2xl">💬</span>
-                              <span className="font-medium text-white/80">
-                                Quote
-                              </span>
-                            </div>
-                            <p className="text-white/70 text-sm italic">
-                              "{player.quote}"
-                            </p>
-                          </div>
+                    {/* Default State - Name and Position (Always Visible) */}
+                    <div className="absolute bottom-6 left-6 right-6 text-white transition-all duration-300">
+                      <div className="mb-2">
+                        <div className="text-lg font-light text-white/90">
+                          {player.firstName}
+                        </div>
+                        <div className="text-2xl font-black uppercase tracking-wide leading-tight">
+                          {player.lastName}
                         </div>
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-            ))}
-          </div>
+                      <div className="text-sm text-white/80 mb-4">
+                        {player.positionDisplay}
+                      </div>
+                    </div>
 
-                      {filteredPlayers.length === 0 && (
-              <div className="text-center py-20">
-                <Users className="w-16 h-16 text-white/50 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">
-                  No players found
-                </h3>
-                <p className="text-white/70">
-                  Try selecting a different position or team.
-                </p>
-              </div>
-            )}
+                    {/* Hover State - Stats Display */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                      <div className="px-6 pb-6 pt-16">
+                        {/* Stats Grid */}
+                        <div className="grid grid-cols-3 gap-4 text-center text-white">
+                          <div>
+                            <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                              Sunday Appearances
+                            </div>
+                            <div className="text-2xl font-bold">
+                              {player.appearances}
+                            </div>
+                            <div className="text-xs text-white/50">
+                              2024 Season
+                            </div>
+                            <div className="text-xs text-orange-400 font-semibold">
+                              0
+                            </div>
+                          </div>
+
+                          {player.position === "GOALKEEPERS" ? (
+                            <>
+                              <div>
+                                <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                                  Sunday Clean Sheets
+                                </div>
+                                <div className="text-2xl font-bold">
+                                  {player.cleanSheets || 0}
+                                </div>
+                                <div className="text-xs text-white/50">
+                                  2024 Season
+                                </div>
+                                <div className="text-xs text-orange-400 font-semibold">
+                                  0
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                                  Sunday Saves
+                                </div>
+                                <div className="text-2xl font-bold">
+                                  {player.saves || 0}
+                                </div>
+                                <div className="text-xs text-white/50">
+                                  2024 Season
+                                </div>
+                                <div className="text-xs text-orange-400 font-semibold">
+                                  0
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div>
+                                <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                                  Sunday Goals
+                                </div>
+                                <div className="text-2xl font-bold">
+                                  {player.goals}
+                                </div>
+                                <div className="text-xs text-white/50">
+                                  2024 Season
+                                </div>
+                                <div className="text-xs text-orange-400 font-semibold">
+                                  0
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                                  Sunday Vibes
+                                </div>
+                                <div className="text-2xl font-bold">100</div>
+                                <div className="text-xs text-white/50">
+                                  2024 Season
+                                </div>
+                                <div className="text-xs text-orange-400 font-semibold">
+                                  0
+                                </div>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Read More Section (Below Card) */}
+                  <Card className="bg-white/5 backdrop-blur-md border border-white/10">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <Badge className={getTeamColor(player.team)}>
+                          {player.team}
+                        </Badge>
+
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => toggleCard(player.id)}
+                          className="text-football-blue-400 hover:text-football-blue-300 hover:bg-football-blue-500/10"
+                        >
+                          {expandedCards.has(player.id) ? (
+                            <>
+                              Less <ChevronUp className="w-4 h-4 ml-1" />
+                            </>
+                          ) : (
+                            <>
+                              Read More <ChevronDown className="w-4 h-4 ml-1" />
+                            </>
+                          )}
+                        </Button>
+                      </div>
+
+                      {/* Expanded Content */}
+                      {expandedCards.has(player.id) && (
+                        <div className="space-y-4 pt-4 border-t border-white/10 animate-in slide-in-from-top-2 duration-300">
+                          <p className="text-white/70 leading-relaxed">
+                            {player.bio}
+                          </p>
+
+                          <div className="space-y-3">
+                            <div className="p-3 bg-football-orange-500/20 rounded-lg border border-football-orange-500/30">
+                              <div className="flex items-center space-x-2 mb-2">
+                                <Star className="w-4 h-4 text-football-orange-400" />
+                                <span className="font-medium text-football-orange-300">
+                                  Fun Fact
+                                </span>
+                              </div>
+                              <p className="text-football-orange-200 text-sm">
+                                {player.funFact}
+                              </p>
+                            </div>
+
+                            <div className="p-3 bg-white/10 rounded-lg border border-white/20">
+                              <div className="flex items-center space-x-2 mb-2">
+                                <span className="text-2xl">💬</span>
+                                <span className="font-medium text-white/80">
+                                  Quote
+                                </span>
+                              </div>
+                              <p className="text-white/70 text-sm italic">
+                                "{player.quote}"
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+
+              {filteredPlayers.length === 0 && !loading && (
+                <div className="text-center py-20 col-span-full">
+                  <Users className="w-16 h-16 text-white/50 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-white mb-2">
+                    No players found
+                  </h3>
+                  <p className="text-white/70">
+                    Try selecting a different position or team.
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>
