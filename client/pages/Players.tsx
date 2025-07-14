@@ -168,17 +168,17 @@ const positions = [
 const getGradientByPosition = (position: string) => {
   switch (position) {
     case "GOALKEEPERS":
-      return "bg-gradient-to-br from-green-500 to-green-700";
+      return "bg-gradient-to-br from-green-500 via-green-600 to-purple-900";
     case "DEFENDERS":
-      return "bg-gradient-to-br from-football-blue-500 to-football-blue-700";
+      return "bg-gradient-to-br from-football-blue-500 via-football-blue-600 to-purple-900";
     case "MIDFIELDERS":
-      return "bg-gradient-to-br from-football-orange-500 to-football-orange-700";
+      return "bg-gradient-to-br from-football-orange-500 via-football-orange-600 to-purple-900";
     case "FORWARDS":
-      return "bg-gradient-to-br from-football-maroon-500 to-football-maroon-700";
+      return "bg-gradient-to-br from-football-maroon-500 via-football-maroon-600 to-purple-900";
     case "COACHING STAFF":
-      return "bg-gradient-to-br from-purple-500 to-purple-700";
+      return "bg-gradient-to-br from-purple-500 via-purple-600 to-purple-900";
     default:
-      return "bg-gradient-to-br from-football-blue-500 to-football-maroon-500";
+      return "bg-gradient-to-br from-football-blue-500 via-football-maroon-500 to-purple-900";
   }
 };
 
@@ -315,19 +315,20 @@ export default function Players() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPlayers.map((player) => (
-              <Card
-                key={player.id}
-                className="group overflow-hidden border-0 bg-white/5 backdrop-blur-md border border-white/10 shadow-lg hover:shadow-2xl hover:shadow-football-blue-500/20 transition-all duration-500 transform hover:-translate-y-2"
-              >
+              <div key={player.id} className="space-y-4">
+                {/* Barcelona-style Player Card */}
                 <div
-                  className={`relative h-80 ${getGradientByPosition(player.position)}`}
+                  className={`relative h-96 rounded-lg overflow-hidden cursor-pointer group ${getGradientByPosition(player.position)} shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2`}
                 >
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <img
-                    src={player.photo}
-                    alt={player.name}
-                    className="w-full h-full object-cover mix-blend-overlay group-hover:scale-110 transition-transform duration-500"
-                  />
+                  {/* Player Image */}
+                  <div className="absolute inset-0">
+                    <img
+                      src={player.photo}
+                      alt={player.name}
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                  </div>
 
                   {/* Jersey Number */}
                   {player.jerseyNumber && (
@@ -338,45 +339,74 @@ export default function Players() {
                     </div>
                   )}
 
-                  {/* Position Badge */}
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-white/20 backdrop-blur-md text-white border-white/30">
-                      {player.position.split(" ")[0]}
-                    </Badge>
-                  </div>
-
-                  {/* Player Info Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                  {/* Default State - Name and Position */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 group-hover:opacity-0 transition-opacity duration-300">
                     <div className="text-white">
                       <p className="text-sm opacity-80 mb-1">
                         {player.nickname}
                       </p>
-                      <h3 className="text-2xl font-bold mb-2">{player.name}</h3>
+                      <h3 className="text-2xl font-bold mb-1">{player.name}</h3>
+                      <p className="text-sm text-white/80 capitalize">
+                        {player.position.toLowerCase().replace("_", " ")}
+                      </p>
+                    </div>
+                  </div>
 
-                      {/* Quick Stats */}
-                      <div className="flex items-center space-x-4 text-sm opacity-90">
-                        <div className="flex items-center space-x-1">
-                          <Calendar className="w-3 h-3" />
-                          <span>{player.appearances}</span>
-                        </div>
-                        {player.goals > 0 && (
-                          <div className="flex items-center space-x-1">
-                            <Goal className="w-3 h-3" />
-                            <span>{player.goals}</span>
+                  {/* Hover State - Stats Display */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/95 to-transparent">
+                    <div className="text-white space-y-4">
+                      {/* Player Name */}
+                      <div>
+                        <p className="text-sm opacity-80 mb-1">
+                          {player.nickname}
+                        </p>
+                        <h3 className="text-2xl font-bold">{player.name}</h3>
+                        <p className="text-sm text-white/80 capitalize">
+                          {player.position.toLowerCase().replace("_", " ")}
+                        </p>
+                      </div>
+
+                      {/* Stats Row */}
+                      <div className="grid grid-cols-3 gap-4 pt-2">
+                        <div className="text-center">
+                          <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                            Appearances
                           </div>
-                        )}
+                          <div className="text-2xl font-bold">
+                            {player.appearances}
+                          </div>
+                          <div className="text-xs text-white/60">
+                            2024 Season
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                            Goals
+                          </div>
+                          <div className="text-2xl font-bold">
+                            {player.goals}
+                          </div>
+                          <div className="text-xs text-white/60">
+                            2024 Season
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                            Fun Rating
+                          </div>
+                          <div className="text-2xl font-bold">100</div>
+                          <div className="text-xs text-white/60">
+                            2024 Season
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    <p className="text-white/70 leading-relaxed">
-                      {player.bio}
-                    </p>
-
-                    {/* Team Status */}
+                {/* Read More Section (Below Card) */}
+                <Card className="bg-white/5 backdrop-blur-md border border-white/10">
+                  <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <Badge
                         variant="outline"
@@ -406,24 +436,9 @@ export default function Players() {
                     {/* Expanded Content */}
                     {expandedCards.has(player.id) && (
                       <div className="space-y-4 pt-4 border-t border-white/10 animate-in slide-in-from-top-2 duration-300">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="text-center p-3 bg-football-blue-500/20 rounded-lg border border-football-blue-500/30">
-                            <div className="text-2xl font-bold text-football-blue-400">
-                              {player.appearances}
-                            </div>
-                            <div className="text-xs text-football-blue-300">
-                              APPEARANCES
-                            </div>
-                          </div>
-                          <div className="text-center p-3 bg-football-maroon-500/20 rounded-lg border border-football-maroon-500/30">
-                            <div className="text-2xl font-bold text-football-maroon-400">
-                              {player.goals}
-                            </div>
-                            <div className="text-xs text-football-maroon-300">
-                              GOALS
-                            </div>
-                          </div>
-                        </div>
+                        <p className="text-white/70 leading-relaxed">
+                          {player.bio}
+                        </p>
 
                         <div className="space-y-3">
                           <div className="p-3 bg-football-orange-500/20 rounded-lg border border-football-orange-500/30">
@@ -452,9 +467,9 @@ export default function Players() {
                         </div>
                       </div>
                     )}
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             ))}
           </div>
 
