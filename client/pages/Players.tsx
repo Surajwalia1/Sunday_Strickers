@@ -261,6 +261,7 @@ export default function Players() {
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
   const [isAddPlayerOpen, setIsAddPlayerOpen] = useState(false);
   const [editingPlayer, setEditingPlayer] = useState<Player | null>(null);
+  const [deletingPlayer, setDeletingPlayer] = useState<Player | null>(null);
 
   // Form state for adding/editing players
   const [formData, setFormData] = useState({
