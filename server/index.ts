@@ -3,6 +3,15 @@ import cors from "cors";
 import path from "path";
 import { handleDemo } from "./routes/demo";
 import { handlePhotoUpload, handleUploadError } from "./routes/upload";
+import {
+  handleGetAllPlayers,
+  handleGetPlayerById,
+  handleAddPlayer,
+  handleUpdatePlayer,
+  handleDeletePlayer,
+  handleGetPlayersByTeam,
+  handleGetPlayersByPosition,
+} from "./routes/players";
 
 export function createServer() {
   const app = express();
