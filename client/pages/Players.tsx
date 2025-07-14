@@ -180,7 +180,7 @@ const initialPlayers: Player[] = [
     bio: "Clinical finisher who lives for goals.",
     appearances: 41,
     goals: 28,
-    funFact: "Loves scoring volleys from impossible angles 🎯",
+    funFact: "Loves scoring volleys from impossible angles ����",
     quote: "Give me half a chance and I'll bury it!",
   },
   {
@@ -358,30 +358,42 @@ export default function Players() {
     }
   };
 
-  const handleAddPlayer = () => {
-    const newPlayer: Player = {
-      id: Date.now().toString(),
-      name: formData.firstName,
-      firstName: formData.firstName,
-      lastName: formData.lastName.toUpperCase(),
-      nickname: formData.nickname,
-      position: formData.position,
-      positionDisplay: formData.position.toLowerCase().replace("_", " "),
-      team: formData.team,
-      jerseyNumber: formData.jerseyNumber || undefined,
-      photo: formData.photo,
-      bio: formData.bio,
-      appearances: formData.appearances,
-      goals: formData.goals,
-      saves: formData.saves,
-      cleanSheets: formData.cleanSheets,
-      funFact: formData.funFact,
-      quote: formData.quote,
-    };
+  const handleAddPlayer = async () => {
+    try {
+      let photoUrl = formData.photo;
 
-    setPlayers([...players, newPlayer]);
-    setIsAddPlayerOpen(false);
-    resetForm();
+      // Upload file if one is selected
+      if (selectedFile) {
+        photoUrl = await handleFileUpload(selectedFile);
+      }
+
+      const newPlayer: Player = {
+        id: Date.now().toString(),
+        name: formData.firstName,
+        firstName: formData.firstName,
+        lastName: formData.lastName.toUpperCase(),
+        nickname: formData.nickname,
+        position: formData.position,
+        positionDisplay: formData.position.toLowerCase().replace("_", " "),
+        team: formData.team,
+        jerseyNumber: formData.jerseyNumber || undefined,
+        photo: photoUrl,
+        bio: formData.bio,
+        appearances: formData.appearances,
+        goals: formData.goals,
+        saves: formData.saves,
+        cleanSheets: formData.cleanSheets,
+        funFact: formData.funFact,
+        quote: formData.quote,
+      };
+
+      setPlayers([...players, newPlayer]);
+      setIsAddPlayerOpen(false);
+      resetForm();
+    } catch (error) {
+      console.error("Failed to add player:", error);
+      // You could add a toast notification here
+    }
   };
 
   const handleEditPlayer = (player: Player) => {
