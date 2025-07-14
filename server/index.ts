@@ -37,6 +37,15 @@ export function createServer() {
   // Photo upload route
   app.post("/api/upload/photo", handlePhotoUpload);
 
+  // Player CRUD routes
+  app.get("/api/players", handleGetAllPlayers);
+  app.get("/api/players/team/:team", handleGetPlayersByTeam);
+  app.get("/api/players/position/:position", handleGetPlayersByPosition);
+  app.get("/api/players/:id", handleGetPlayerById);
+  app.post("/api/players", handleAddPlayer);
+  app.put("/api/players/:id", handleUpdatePlayer);
+  app.delete("/api/players/:id", handleDeletePlayer);
+
   // Error handling middleware for uploads
   app.use(handleUploadError);
 
