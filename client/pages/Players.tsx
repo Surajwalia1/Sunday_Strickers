@@ -282,6 +282,9 @@ export default function Players() {
     quote: "",
   });
 
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+
   const filteredPlayers = players.filter((player) => {
     const positionMatch =
       selectedPosition === "ALL" || player.position === selectedPosition;
