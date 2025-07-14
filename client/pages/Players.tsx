@@ -17,6 +17,8 @@ import {
 interface Player {
   id: string;
   name: string;
+  firstName: string;
+  lastName: string;
   nickname: string;
   position:
     | "GOALKEEPERS"
@@ -24,11 +26,14 @@ interface Player {
     | "MIDFIELDERS"
     | "FORWARDS"
     | "COACHING STAFF";
+  positionDisplay: string;
   jerseyNumber?: string;
   photo: string;
   bio: string;
   appearances: number;
   goals: number;
+  saves?: number;
+  cleanSheets?: number;
   funFact: string;
   quote: string;
   team: string;
@@ -38,14 +43,19 @@ const players: Player[] = [
   {
     id: "1",
     name: "Rahul",
+    firstName: "Rahul",
+    lastName: "SHARMA",
     nickname: "Safe Hands",
     position: "GOALKEEPERS",
+    positionDisplay: "Goalkeeper",
     jerseyNumber: "1",
     photo:
       "https://images.unsplash.com/photo-1594736797933-d0c32e5d0b06?w=400&h=500&fit=crop&crop=face",
     bio: "Our reliable last line of defense who never gives up on a ball.",
     appearances: 42,
     goals: 0,
+    saves: 156,
+    cleanSheets: 18,
     funFact: "Has saved 3 penalties this season! 🥅",
     quote: "They don't call me Safe Hands for nothing!",
     team: "Coming Soon",
@@ -53,8 +63,11 @@ const players: Player[] = [
   {
     id: "2",
     name: "Arjun",
+    firstName: "Arjun",
+    lastName: "SINGH",
     nickname: "The Wall",
     position: "DEFENDERS",
+    positionDisplay: "Defender",
     jerseyNumber: "4",
     photo:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=face",
@@ -68,8 +81,11 @@ const players: Player[] = [
   {
     id: "3",
     name: "Vikram",
+    firstName: "Vikram",
+    lastName: "PATEL",
     nickname: "Captain",
     position: "DEFENDERS",
+    positionDisplay: "Defender",
     jerseyNumber: "5",
     photo:
       "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=400&h=500&fit=crop&crop=face",
@@ -83,8 +99,11 @@ const players: Player[] = [
   {
     id: "4",
     name: "Amit",
+    firstName: "Amit",
+    lastName: "KUMAR",
     nickname: "Playmaker",
     position: "MIDFIELDERS",
+    positionDisplay: "Midfielder",
     jerseyNumber: "8",
     photo:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&crop=face",
@@ -98,8 +117,11 @@ const players: Player[] = [
   {
     id: "5",
     name: "Rohit",
+    firstName: "Rohit",
+    lastName: "GUPTA",
     nickname: "Engine",
     position: "MIDFIELDERS",
+    positionDisplay: "Midfielder",
     jerseyNumber: "6",
     photo:
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=500&fit=crop&crop=face",
@@ -113,8 +135,11 @@ const players: Player[] = [
   {
     id: "6",
     name: "Karan",
+    firstName: "Karan",
+    lastName: "VERMA",
     nickname: "Striker",
     position: "FORWARDS",
+    positionDisplay: "Forward",
     jerseyNumber: "9",
     photo:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=500&fit=crop&crop=face",
@@ -128,8 +153,11 @@ const players: Player[] = [
   {
     id: "7",
     name: "Priya",
+    firstName: "Priya",
+    lastName: "DESAI",
     nickname: "Lightning",
     position: "FORWARDS",
+    positionDisplay: "Forward",
     jerseyNumber: "11",
     photo:
       "https://images.unsplash.com/photo-1494790108755-2616b332e234?w=400&h=500&fit=crop&crop=face",
@@ -143,8 +171,11 @@ const players: Player[] = [
   {
     id: "8",
     name: "Coach Dev",
+    firstName: "Dev",
+    lastName: "COACH",
     nickname: "Guru Ji",
     position: "COACHING STAFF",
+    positionDisplay: "Coach",
     photo:
       "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop&crop=face",
     bio: "The mastermind behind our Sunday success.",
@@ -168,17 +199,17 @@ const positions = [
 const getGradientByPosition = (position: string) => {
   switch (position) {
     case "GOALKEEPERS":
-      return "bg-gradient-to-br from-green-500 via-green-600 to-purple-900";
+      return "bg-gradient-to-br from-green-500 via-purple-600 to-purple-900";
     case "DEFENDERS":
-      return "bg-gradient-to-br from-football-blue-500 via-football-blue-600 to-purple-900";
+      return "bg-gradient-to-br from-football-blue-500 via-purple-600 to-purple-900";
     case "MIDFIELDERS":
-      return "bg-gradient-to-br from-football-orange-500 via-football-orange-600 to-purple-900";
+      return "bg-gradient-to-br from-football-orange-500 via-purple-600 to-purple-900";
     case "FORWARDS":
-      return "bg-gradient-to-br from-football-maroon-500 via-football-maroon-600 to-purple-900";
+      return "bg-gradient-to-br from-football-maroon-500 via-purple-600 to-purple-900";
     case "COACHING STAFF":
       return "bg-gradient-to-br from-purple-500 via-purple-600 to-purple-900";
     default:
-      return "bg-gradient-to-br from-football-blue-500 via-football-maroon-500 to-purple-900";
+      return "bg-gradient-to-br from-football-blue-500 via-purple-600 to-purple-900";
   }
 };
 
@@ -318,87 +349,123 @@ export default function Players() {
               <div key={player.id} className="space-y-4">
                 {/* Barcelona-style Player Card */}
                 <div
-                  className={`relative h-96 rounded-lg overflow-hidden cursor-pointer group ${getGradientByPosition(player.position)} shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2`}
+                  className={`relative h-96 rounded-lg overflow-hidden cursor-pointer group ${getGradientByPosition(player.position)} shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-1`}
                 >
                   {/* Player Image */}
                   <div className="absolute inset-0">
                     <img
                       src={player.photo}
                       alt={player.name}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                      className="w-full h-full object-cover object-center transition-transform duration-700"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                   </div>
 
                   {/* Jersey Number */}
                   {player.jerseyNumber && (
-                    <div className="absolute top-4 right-4 w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
+                    <div className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-lg">
                         {player.jerseyNumber}
                       </span>
                     </div>
                   )}
 
-                  {/* Default State - Name and Position */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 group-hover:opacity-0 transition-opacity duration-300">
-                    <div className="text-white">
-                      <p className="text-sm opacity-80 mb-1">
-                        {player.nickname}
-                      </p>
-                      <h3 className="text-2xl font-bold mb-1">{player.name}</h3>
-                      <p className="text-sm text-white/80 capitalize">
-                        {player.position.toLowerCase().replace("_", " ")}
-                      </p>
+                  {/* Default State - Name and Position (Always Visible) */}
+                  <div className="absolute bottom-6 left-6 right-6 text-white transition-all duration-300">
+                    <div className="mb-2">
+                      <div className="text-lg font-light text-white/90">
+                        {player.firstName}
+                      </div>
+                      <div className="text-2xl font-black uppercase tracking-wide leading-tight">
+                        {player.lastName}
+                      </div>
+                    </div>
+                    <div className="text-sm text-white/80 mb-4">
+                      {player.positionDisplay}
                     </div>
                   </div>
 
                   {/* Hover State - Stats Display */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/95 to-transparent">
-                    <div className="text-white space-y-4">
-                      {/* Player Name */}
-                      <div>
-                        <p className="text-sm opacity-80 mb-1">
-                          {player.nickname}
-                        </p>
-                        <h3 className="text-2xl font-bold">{player.name}</h3>
-                        <p className="text-sm text-white/80 capitalize">
-                          {player.position.toLowerCase().replace("_", " ")}
-                        </p>
-                      </div>
-
-                      {/* Stats Row */}
-                      <div className="grid grid-cols-3 gap-4 pt-2">
-                        <div className="text-center">
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                    <div className="px-6 pb-6 pt-16">
+                      {/* Stats Grid */}
+                      <div className="grid grid-cols-3 gap-4 text-center text-white">
+                        <div>
                           <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
-                            Appearances
+                            Sunday Appearances
                           </div>
                           <div className="text-2xl font-bold">
                             {player.appearances}
                           </div>
-                          <div className="text-xs text-white/60">
+                          <div className="text-xs text-white/50">
                             2024 Season
                           </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
-                            Goals
-                          </div>
-                          <div className="text-2xl font-bold">
-                            {player.goals}
-                          </div>
-                          <div className="text-xs text-white/60">
-                            2024 Season
+                          <div className="text-xs text-orange-400 font-semibold">
+                            0
                           </div>
                         </div>
-                        <div className="text-center">
-                          <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
-                            Fun Rating
-                          </div>
-                          <div className="text-2xl font-bold">100</div>
-                          <div className="text-xs text-white/60">
-                            2024 Season
-                          </div>
-                        </div>
+
+                        {player.position === "GOALKEEPERS" ? (
+                          <>
+                            <div>
+                              <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                                Sunday Clean Sheets
+                              </div>
+                              <div className="text-2xl font-bold">
+                                {player.cleanSheets || 0}
+                              </div>
+                              <div className="text-xs text-white/50">
+                                2024 Season
+                              </div>
+                              <div className="text-xs text-orange-400 font-semibold">
+                                0
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                                Sunday Saves
+                              </div>
+                              <div className="text-2xl font-bold">
+                                {player.saves || 0}
+                              </div>
+                              <div className="text-xs text-white/50">
+                                2024 Season
+                              </div>
+                              <div className="text-xs text-orange-400 font-semibold">
+                                0
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div>
+                              <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                                Sunday Goals
+                              </div>
+                              <div className="text-2xl font-bold">
+                                {player.goals}
+                              </div>
+                              <div className="text-xs text-white/50">
+                                2024 Season
+                              </div>
+                              <div className="text-xs text-orange-400 font-semibold">
+                                0
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
+                                Sunday Vibes
+                              </div>
+                              <div className="text-2xl font-bold">100</div>
+                              <div className="text-xs text-white/50">
+                                2024 Season
+                              </div>
+                              <div className="text-xs text-orange-400 font-semibold">
+                                0
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
