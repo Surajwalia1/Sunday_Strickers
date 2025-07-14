@@ -404,6 +404,15 @@ export default function Players() {
     resetForm();
   };
 
+  const handleDeletePlayer = (playerId: string) => {
+    setPlayers(players.filter((p) => p.id !== playerId));
+    setDeletingPlayer(null);
+    // Close expanded card if it was expanded
+    const newExpanded = new Set(expandedCards);
+    newExpanded.delete(playerId);
+    setExpandedCards(newExpanded);
+  };
+
   const PlayerForm = ({ isEdit = false }: { isEdit?: boolean }) => (
     <div className="space-y-4 max-h-96 overflow-y-auto">
       <div className="grid grid-cols-2 gap-4">
