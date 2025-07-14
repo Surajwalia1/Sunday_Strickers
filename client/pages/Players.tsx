@@ -369,13 +369,19 @@ export default function Players() {
     }
   };
 
-  const handleDeletePlayer = (playerId: string) => {
-    setPlayers(players.filter((p) => p.id !== playerId));
-    setDeletingPlayer(null);
-    // Close expanded card if it was expanded
-    const newExpanded = new Set(expandedCards);
-    newExpanded.delete(playerId);
-    setExpandedCards(newExpanded);
+  const handleDeletePlayer = async (playerId: string) => {
+    try {
+      await api.deletePlayer(playerId);
+      setPlayers(players.filter((p) => p.id !== playerId));
+      setDeletingPlayer(null);
+      // Close expanded card if it was expanded
+      const newExpanded = new Set(expandedCards);
+      newExpanded.delete(playerId);
+      setExpandedCards(newExpanded);
+    } catch (error) {
+      console.error("Failed to delete player:", error);
+      setError("Failed to delete player");
+    }
   };
 
   const PlayerForm = ({ isEdit = false }: { isEdit?: boolean }) => (
