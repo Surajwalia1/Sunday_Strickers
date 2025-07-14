@@ -4,6 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import {
   Trophy,
   ArrowLeft,
   ChevronDown,
@@ -12,6 +29,10 @@ import {
   Users,
   Calendar,
   Star,
+  Plus,
+  Edit3,
+  Save,
+  X,
 } from "lucide-react";
 
 interface Player {
@@ -27,6 +48,7 @@ interface Player {
     | "FORWARDS"
     | "COACHING STAFF";
   positionDisplay: string;
+  team: "Team A" | "Team B";
   jerseyNumber?: string;
   photo: string;
   bio: string;
@@ -36,10 +58,9 @@ interface Player {
   cleanSheets?: number;
   funFact: string;
   quote: string;
-  team: string;
 }
 
-const players: Player[] = [
+const initialPlayers: Player[] = [
   {
     id: "1",
     name: "Rahul",
@@ -48,6 +69,7 @@ const players: Player[] = [
     nickname: "Safe Hands",
     position: "GOALKEEPERS",
     positionDisplay: "Goalkeeper",
+    team: "Team A",
     jerseyNumber: "1",
     photo:
       "https://images.unsplash.com/photo-1594736797933-d0c32e5d0b06?w=400&h=500&fit=crop&crop=face",
@@ -58,7 +80,6 @@ const players: Player[] = [
     cleanSheets: 18,
     funFact: "Has saved 3 penalties this season! 🥅",
     quote: "They don't call me Safe Hands for nothing!",
-    team: "Coming Soon",
   },
   {
     id: "2",
@@ -68,6 +89,7 @@ const players: Player[] = [
     nickname: "The Wall",
     position: "DEFENDERS",
     positionDisplay: "Defender",
+    team: "Team A",
     jerseyNumber: "4",
     photo:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=face",
@@ -76,7 +98,6 @@ const players: Player[] = [
     goals: 3,
     funFact: "Never missed a header in the penalty box 💪",
     quote: "You shall not pass!",
-    team: "Coming Soon",
   },
   {
     id: "3",
@@ -86,6 +107,7 @@ const players: Player[] = [
     nickname: "Captain",
     position: "DEFENDERS",
     positionDisplay: "Defender",
+    team: "Team B",
     jerseyNumber: "5",
     photo:
       "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=400&h=500&fit=crop&crop=face",
@@ -94,7 +116,6 @@ const players: Player[] = [
     goals: 5,
     funFact: "Always arrives 30 minutes early ⏰",
     quote: "Leading from the back since day one!",
-    team: "Coming Soon",
   },
   {
     id: "4",
@@ -104,6 +125,7 @@ const players: Player[] = [
     nickname: "Playmaker",
     position: "MIDFIELDERS",
     positionDisplay: "Midfielder",
+    team: "Team A",
     jerseyNumber: "8",
     photo:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&crop=face",
@@ -112,7 +134,6 @@ const players: Player[] = [
     goals: 12,
     funFact: "Can bend it like Beckham from 30 yards ⚽",
     quote: "Football is about making the impossible pass!",
-    team: "Coming Soon",
   },
   {
     id: "5",
@@ -122,6 +143,7 @@ const players: Player[] = [
     nickname: "Engine",
     position: "MIDFIELDERS",
     positionDisplay: "Midfielder",
+    team: "Team B",
     jerseyNumber: "6",
     photo:
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=500&fit=crop&crop=face",
@@ -130,7 +152,6 @@ const players: Player[] = [
     goals: 8,
     funFact: "Runs 12km every game without breaking a sweat 🏃‍♂️",
     quote: "I'll run until the final whistle!",
-    team: "Coming Soon",
   },
   {
     id: "6",
@@ -140,6 +161,7 @@ const players: Player[] = [
     nickname: "Striker",
     position: "FORWARDS",
     positionDisplay: "Forward",
+    team: "Team A",
     jerseyNumber: "9",
     photo:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=500&fit=crop&crop=face",
@@ -148,7 +170,6 @@ const players: Player[] = [
     goals: 28,
     funFact: "Loves scoring volleys from impossible angles 🎯",
     quote: "Give me half a chance and I'll bury it!",
-    team: "Coming Soon",
   },
   {
     id: "7",
@@ -158,6 +179,7 @@ const players: Player[] = [
     nickname: "Lightning",
     position: "FORWARDS",
     positionDisplay: "Forward",
+    team: "Team B",
     jerseyNumber: "11",
     photo:
       "https://images.unsplash.com/photo-1494790108755-2616b332e234?w=400&h=500&fit=crop&crop=face",
@@ -166,7 +188,6 @@ const players: Player[] = [
     goals: 15,
     funFact: "First to arrive, last to leave every Sunday 🌟",
     quote: "Speed kills, but skill pays the bills!",
-    team: "Coming Soon",
   },
   {
     id: "8",
@@ -176,6 +197,7 @@ const players: Player[] = [
     nickname: "Guru Ji",
     position: "COACHING STAFF",
     positionDisplay: "Coach",
+    team: "Team A",
     photo:
       "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop&crop=face",
     bio: "The mastermind behind our Sunday success.",
@@ -183,7 +205,6 @@ const players: Player[] = [
     goals: 0,
     funFact: "Can spot talent from a mile away 👁️",
     quote: "Football is 90% mental, the other half is physical!",
-    team: "Coming Soon",
   },
 ];
 
@@ -195,6 +216,8 @@ const positions = [
   "FORWARDS",
   "COACHING STAFF",
 ];
+
+const teams = ["ALL", "Team A", "Team B"];
 
 const getGradientByPosition = (position: string) => {
   switch (position) {
@@ -213,14 +236,45 @@ const getGradientByPosition = (position: string) => {
   }
 };
 
-export default function Players() {
-  const [selectedPosition, setSelectedPosition] = useState("ALL");
-  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+const getTeamColor = (team: string) => {
+  return team === "Team A"
+    ? "bg-football-blue-500/20 border-football-blue-500/40 text-football-blue-300"
+    : "bg-football-maroon-500/20 border-football-maroon-500/40 text-football-maroon-300";
+};
 
-  const filteredPlayers =
-    selectedPosition === "ALL"
-      ? players
-      : players.filter((player) => player.position === selectedPosition);
+export default function Players() {
+  const [players, setPlayers] = useState<Player[]>(initialPlayers);
+  const [selectedPosition, setSelectedPosition] = useState("ALL");
+  const [selectedTeam, setSelectedTeam] = useState("ALL");
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+  const [isAddPlayerOpen, setIsAddPlayerOpen] = useState(false);
+  const [editingPlayer, setEditingPlayer] = useState<Player | null>(null);
+
+  // Form state for adding/editing players
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    nickname: "",
+    position: "FORWARDS" as Player["position"],
+    team: "Team A" as Player["team"],
+    jerseyNumber: "",
+    photo:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&crop=face",
+    bio: "",
+    appearances: 0,
+    goals: 0,
+    saves: 0,
+    cleanSheets: 0,
+    funFact: "",
+    quote: "",
+  });
+
+  const filteredPlayers = players.filter((player) => {
+    const positionMatch =
+      selectedPosition === "ALL" || player.position === selectedPosition;
+    const teamMatch = selectedTeam === "ALL" || player.team === selectedTeam;
+    return positionMatch && teamMatch;
+  });
 
   const toggleCard = (playerId: string) => {
     const newExpanded = new Set(expandedCards);
@@ -236,6 +290,311 @@ export default function Players() {
     if (position === "ALL") return players.length;
     return players.filter((p) => p.position === position).length;
   };
+
+  const getTeamCount = (team: string) => {
+    if (team === "ALL") return players.length;
+    return players.filter((p) => p.team === team).length;
+  };
+
+  const resetForm = () => {
+    setFormData({
+      firstName: "",
+      lastName: "",
+      nickname: "",
+      position: "FORWARDS",
+      team: "Team A",
+      jerseyNumber: "",
+      photo:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&crop=face",
+      bio: "",
+      appearances: 0,
+      goals: 0,
+      saves: 0,
+      cleanSheets: 0,
+      funFact: "",
+      quote: "",
+    });
+  };
+
+  const handleAddPlayer = () => {
+    const newPlayer: Player = {
+      id: Date.now().toString(),
+      name: formData.firstName,
+      firstName: formData.firstName,
+      lastName: formData.lastName.toUpperCase(),
+      nickname: formData.nickname,
+      position: formData.position,
+      positionDisplay: formData.position.toLowerCase().replace("_", " "),
+      team: formData.team,
+      jerseyNumber: formData.jerseyNumber || undefined,
+      photo: formData.photo,
+      bio: formData.bio,
+      appearances: formData.appearances,
+      goals: formData.goals,
+      saves: formData.saves,
+      cleanSheets: formData.cleanSheets,
+      funFact: formData.funFact,
+      quote: formData.quote,
+    };
+
+    setPlayers([...players, newPlayer]);
+    setIsAddPlayerOpen(false);
+    resetForm();
+  };
+
+  const handleEditPlayer = (player: Player) => {
+    setEditingPlayer(player);
+    setFormData({
+      firstName: player.firstName,
+      lastName: player.lastName,
+      nickname: player.nickname,
+      position: player.position,
+      team: player.team,
+      jerseyNumber: player.jerseyNumber || "",
+      photo: player.photo,
+      bio: player.bio,
+      appearances: player.appearances,
+      goals: player.goals,
+      saves: player.saves || 0,
+      cleanSheets: player.cleanSheets || 0,
+      funFact: player.funFact,
+      quote: player.quote,
+    });
+  };
+
+  const handleSaveEdit = () => {
+    if (!editingPlayer) return;
+
+    const updatedPlayer: Player = {
+      ...editingPlayer,
+      firstName: formData.firstName,
+      lastName: formData.lastName.toUpperCase(),
+      nickname: formData.nickname,
+      position: formData.position,
+      positionDisplay: formData.position.toLowerCase().replace("_", " "),
+      team: formData.team,
+      jerseyNumber: formData.jerseyNumber || undefined,
+      photo: formData.photo,
+      bio: formData.bio,
+      appearances: formData.appearances,
+      goals: formData.goals,
+      saves: formData.saves,
+      cleanSheets: formData.cleanSheets,
+      funFact: formData.funFact,
+      quote: formData.quote,
+    };
+
+    setPlayers(
+      players.map((p) => (p.id === editingPlayer.id ? updatedPlayer : p)),
+    );
+    setEditingPlayer(null);
+    resetForm();
+  };
+
+  const PlayerForm = ({ isEdit = false }: { isEdit?: boolean }) => (
+    <div className="space-y-4 max-h-96 overflow-y-auto">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="firstName" className="text-white">
+            First Name
+          </Label>
+          <Input
+            id="firstName"
+            value={formData.firstName}
+            onChange={(e) =>
+              setFormData({ ...formData, firstName: e.target.value })
+            }
+            className="bg-white/10 border-white/20 text-white"
+          />
+        </div>
+        <div>
+          <Label htmlFor="lastName" className="text-white">
+            Last Name
+          </Label>
+          <Input
+            id="lastName"
+            value={formData.lastName}
+            onChange={(e) =>
+              setFormData({ ...formData, lastName: e.target.value })
+            }
+            className="bg-white/10 border-white/20 text-white"
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="nickname" className="text-white">
+          Nickname
+        </Label>
+        <Input
+          id="nickname"
+          value={formData.nickname}
+          onChange={(e) =>
+            setFormData({ ...formData, nickname: e.target.value })
+          }
+          className="bg-white/10 border-white/20 text-white"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="position" className="text-white">
+            Position
+          </Label>
+          <Select
+            value={formData.position}
+            onValueChange={(value) =>
+              setFormData({
+                ...formData,
+                position: value as Player["position"],
+              })
+            }
+          >
+            <SelectTrigger className="bg-white/10 border-white/20 text-white">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="GOALKEEPERS">Goalkeeper</SelectItem>
+              <SelectItem value="DEFENDERS">Defender</SelectItem>
+              <SelectItem value="MIDFIELDERS">Midfielder</SelectItem>
+              <SelectItem value="FORWARDS">Forward</SelectItem>
+              <SelectItem value="COACHING STAFF">Coach</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="team" className="text-white">
+            Team
+          </Label>
+          <Select
+            value={formData.team}
+            onValueChange={(value) =>
+              setFormData({ ...formData, team: value as Player["team"] })
+            }
+          >
+            <SelectTrigger className="bg-white/10 border-white/20 text-white">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Team A">Team A</SelectItem>
+              <SelectItem value="Team B">Team B</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="jerseyNumber" className="text-white">
+          Jersey Number
+        </Label>
+        <Input
+          id="jerseyNumber"
+          value={formData.jerseyNumber}
+          onChange={(e) =>
+            setFormData({ ...formData, jerseyNumber: e.target.value })
+          }
+          className="bg-white/10 border-white/20 text-white"
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="bio" className="text-white">
+          Bio
+        </Label>
+        <Textarea
+          id="bio"
+          value={formData.bio}
+          onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+          className="bg-white/10 border-white/20 text-white"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="appearances" className="text-white">
+            Appearances
+          </Label>
+          <Input
+            id="appearances"
+            type="number"
+            value={formData.appearances}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                appearances: parseInt(e.target.value) || 0,
+              })
+            }
+            className="bg-white/10 border-white/20 text-white"
+          />
+        </div>
+        <div>
+          <Label htmlFor="goals" className="text-white">
+            Goals
+          </Label>
+          <Input
+            id="goals"
+            type="number"
+            value={formData.goals}
+            onChange={(e) =>
+              setFormData({ ...formData, goals: parseInt(e.target.value) || 0 })
+            }
+            className="bg-white/10 border-white/20 text-white"
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="funFact" className="text-white">
+          Fun Fact
+        </Label>
+        <Input
+          id="funFact"
+          value={formData.funFact}
+          onChange={(e) =>
+            setFormData({ ...formData, funFact: e.target.value })
+          }
+          className="bg-white/10 border-white/20 text-white"
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="quote" className="text-white">
+          Quote
+        </Label>
+        <Input
+          id="quote"
+          value={formData.quote}
+          onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
+          className="bg-white/10 border-white/20 text-white"
+        />
+      </div>
+
+      <div className="flex gap-2 pt-4">
+        <Button
+          onClick={isEdit ? handleSaveEdit : handleAddPlayer}
+          className="bg-football-blue-500 hover:bg-football-blue-600"
+        >
+          <Save className="w-4 h-4 mr-2" />
+          {isEdit ? "Save Changes" : "Add Player"}
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => {
+            if (isEdit) {
+              setEditingPlayer(null);
+            } else {
+              setIsAddPlayerOpen(false);
+            }
+            resetForm();
+          }}
+          className="border-white/20 text-white hover:bg-white/10"
+        >
+          <X className="w-4 h-4 mr-2" />
+          Cancel
+        </Button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
@@ -288,7 +647,7 @@ export default function Players() {
       {/* Page Header */}
       <section className="py-12 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center space-x-4 mb-8">
+          <div className="flex items-center justify-between mb-8">
             <Link to="/">
               <Button
                 variant="ghost"
@@ -299,6 +658,24 @@ export default function Players() {
                 Back to Home
               </Button>
             </Link>
+
+            {/* Add Player Button */}
+            <Dialog open={isAddPlayerOpen} onOpenChange={setIsAddPlayerOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-gradient-to-r from-football-blue-500 to-football-maroon-500 hover:from-football-blue-600 hover:to-football-maroon-600">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Player
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="text-white">
+                    Add New Player
+                  </DialogTitle>
+                </DialogHeader>
+                <PlayerForm />
+              </DialogContent>
+            </Dialog>
           </div>
 
           <div className="text-center space-y-4 mb-12">
@@ -310,6 +687,30 @@ export default function Players() {
             </p>
           </div>
 
+          {/* Team Filter Tabs */}
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {teams.map((team) => (
+              <button
+                key={team}
+                onClick={() => setSelectedTeam(team)}
+                className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                  selectedTeam === team
+                    ? team === "Team A"
+                      ? "bg-gradient-to-r from-football-blue-500 to-football-blue-600 text-white shadow-lg"
+                      : team === "Team B"
+                        ? "bg-gradient-to-r from-football-maroon-500 to-football-maroon-600 text-white shadow-lg"
+                        : "bg-gradient-to-r from-football-blue-500 to-football-maroon-500 text-white shadow-lg"
+                    : "bg-white/10 backdrop-blur-md text-white/70 hover:bg-white/20 hover:text-white"
+                }`}
+              >
+                {team}
+                <span className="ml-2 text-xs bg-white/20 px-2 py-1 rounded-full">
+                  {getTeamCount(team)}
+                </span>
+              </button>
+            ))}
+          </div>
+
           {/* Position Filter Tabs */}
           <div className="flex flex-wrap justify-center gap-2 mb-8">
             {positions.map((position) => (
@@ -318,7 +719,7 @@ export default function Players() {
                 onClick={() => setSelectedPosition(position)}
                 className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
                   selectedPosition === position
-                    ? "bg-gradient-to-r from-football-blue-500 to-football-maroon-500 text-white shadow-lg"
+                    ? "bg-gradient-to-r from-football-orange-500 to-football-orange-600 text-white shadow-lg"
                     : "bg-white/10 backdrop-blur-md text-white/70 hover:bg-white/20 hover:text-white"
                 }`}
               >
@@ -329,15 +730,6 @@ export default function Players() {
               </button>
             ))}
           </div>
-
-          {/* Position Title */}
-          {selectedPosition !== "ALL" && (
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
-                {selectedPosition}
-              </h2>
-            </div>
-          )}
         </div>
       </section>
 
@@ -369,6 +761,40 @@ export default function Players() {
                       </span>
                     </div>
                   )}
+
+                  {/* Team Badge */}
+                  <div className="absolute top-4 left-4">
+                    <Badge className={getTeamColor(player.team)}>
+                      {player.team}
+                    </Badge>
+                  </div>
+
+                  {/* Edit Button */}
+                  <div className="absolute top-4 right-16">
+                    <Dialog
+                      open={editingPlayer?.id === player.id}
+                      onOpenChange={(open) => !open && setEditingPlayer(null)}
+                    >
+                      <DialogTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleEditPlayer(player)}
+                          className="w-8 h-8 p-0 bg-white/20 backdrop-blur-md hover:bg-white/30"
+                        >
+                          <Edit3 className="w-4 h-4 text-white" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
+                        <DialogHeader>
+                          <DialogTitle className="text-white">
+                            Edit Player Details
+                          </DialogTitle>
+                        </DialogHeader>
+                        <PlayerForm isEdit={true} />
+                      </DialogContent>
+                    </Dialog>
+                  </div>
 
                   {/* Default State - Name and Position (Always Visible) */}
                   <div className="absolute bottom-6 left-6 right-6 text-white transition-all duration-300">
@@ -475,10 +901,7 @@ export default function Players() {
                 <Card className="bg-white/5 backdrop-blur-md border border-white/10">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
-                      <Badge
-                        variant="outline"
-                        className="border-football-orange-400/30 text-football-orange-400 bg-football-orange-500/10"
-                      >
+                      <Badge className={getTeamColor(player.team)}>
                         {player.team}
                       </Badge>
 
@@ -547,7 +970,7 @@ export default function Players() {
                 No players found
               </h3>
               <p className="text-white/70">
-                Try selecting a different position.
+                Try selecting a different position or team.
               </p>
             </div>
           )}
