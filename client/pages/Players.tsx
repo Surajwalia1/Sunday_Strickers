@@ -330,6 +330,32 @@ export default function Players() {
       funFact: "",
       quote: "",
     });
+    setSelectedFile(null);
+  };
+
+  const handleFileUpload = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("photo", file);
+
+    setUploading(true);
+    try {
+      const response = await fetch("/api/upload/photo", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
+
+      const result = await response.json();
+      return result.url;
+    } catch (error) {
+      console.error("Upload error:", error);
+      throw error;
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleAddPlayer = () => {
