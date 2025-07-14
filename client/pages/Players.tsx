@@ -689,10 +689,11 @@ export default function Players() {
       <div className="flex gap-2 pt-4">
         <Button
           onClick={isEdit ? handleSaveEdit : handleAddPlayer}
-          className="bg-football-blue-500 hover:bg-football-blue-600"
+          disabled={uploading}
+          className="bg-football-blue-500 hover:bg-football-blue-600 disabled:opacity-50"
         >
           <Save className="w-4 h-4 mr-2" />
-          {isEdit ? "Save Changes" : "Add Player"}
+          {uploading ? "Uploading..." : isEdit ? "Save Changes" : "Add Player"}
         </Button>
         <Button
           variant="outline"
