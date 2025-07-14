@@ -1061,15 +1061,17 @@ export default function Players() {
             ))}
           </div>
 
-          {filteredPlayers.length === 0 && (
-            <div className="text-center py-20">
-              <Users className="w-16 h-16 text-white/50 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">
-                No players found
-              </h3>
-              <p className="text-white/70">
-                Try selecting a different position or team.
-              </p>
+                      {filteredPlayers.length === 0 && (
+              <div className="text-center py-20">
+                <Users className="w-16 h-16 text-white/50 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  No players found
+                </h3>
+                <p className="text-white/70">
+                  Try selecting a different position or team.
+                </p>
+              </div>
+            )}
             </div>
           )}
         </div>
