@@ -33,6 +33,7 @@ import {
   Edit3,
   Save,
   X,
+  Trash2,
 } from "lucide-react";
 
 interface Player {
