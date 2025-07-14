@@ -276,8 +276,7 @@ export default function Players() {
         photoUrl = await handleFileUpload(selectedFile);
       }
 
-      const newPlayer: Player = {
-        id: Date.now().toString(),
+      const playerData = {
         name: formData.firstName,
         firstName: formData.firstName,
         lastName: formData.lastName.toUpperCase(),
@@ -296,12 +295,13 @@ export default function Players() {
         quote: formData.quote,
       };
 
+      const newPlayer = await api.addPlayer(playerData);
       setPlayers([...players, newPlayer]);
       setIsAddPlayerOpen(false);
       resetForm();
     } catch (error) {
       console.error("Failed to add player:", error);
-      // You could add a toast notification here
+      setError("Failed to add player");
     }
   };
 
