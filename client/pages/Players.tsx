@@ -324,6 +324,7 @@ export default function Players() {
       setIsAddPlayerOpen(false);
       resetForm();
       setError(null); // Clear any previous errors
+      console.log("Player added successfully:", newPlayer);
     } catch (error) {
       console.error("Failed to add player:", error);
       setError(
