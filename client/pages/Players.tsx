@@ -363,6 +363,12 @@ export default function Players() {
     if (!editingPlayer) return;
 
     try {
+      // Basic form validation
+      if (!formData.firstName.trim() || !formData.lastName.trim()) {
+        setError("First name and last name are required");
+        return;
+      }
+
       let photoUrl = formData.photo;
 
       // Upload file if one is selected
