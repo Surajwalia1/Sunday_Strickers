@@ -392,7 +392,9 @@ export default function Players() {
       resetForm();
     } catch (error) {
       console.error("Failed to update player:", error);
-      setError("Failed to update player");
+      setError(
+        `Failed to update player: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     }
   };
 
