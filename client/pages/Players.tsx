@@ -832,72 +832,76 @@ export default function Players() {
                       </Badge>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="absolute top-4 right-16 flex space-x-2">
-                      {/* Edit Button */}
-                      <Dialog
-                        open={editingPlayer?.id === player.id}
-                        onOpenChange={(open) => !open && setEditingPlayer(null)}
-                      >
-                        <DialogTrigger asChild>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleEditPlayer(player)}
-                            className="w-8 h-8 p-0 bg-white/20 backdrop-blur-md hover:bg-white/30"
-                          >
-                            <Edit3 className="w-4 h-4 text-white" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
-                          <DialogHeader>
-                            <DialogTitle className="text-white">
-                              Edit Player Details
-                            </DialogTitle>
-                          </DialogHeader>
-                          <PlayerForm isEdit={true} />
-                        </DialogContent>
-                      </Dialog>
-
-                      {/* Delete Button */}
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="w-8 h-8 p-0 bg-red-500/20 backdrop-blur-md hover:bg-red-500/40"
-                          >
-                            <Trash2 className="w-4 h-4 text-white" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent className="bg-black/90 border-white/20">
-                          <AlertDialogHeader>
-                            <AlertDialogTitle className="text-white">
-                              Delete Player
-                            </AlertDialogTitle>
-                            <AlertDialogDescription className="text-white/70">
-                              Are you sure you want to delete{" "}
-                              <span className="font-semibold text-white">
-                                {player.firstName} {player.lastName}
-                              </span>
-                              ? This action cannot be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-                              Cancel
-                            </AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDeletePlayer(player.id)}
-                              className="bg-red-500 hover:bg-red-600 text-white"
+                    {/* Action Buttons - Only visible when logged in */}
+                    {isLoggedIn && (
+                      <div className="absolute top-4 right-16 flex space-x-2">
+                        {/* Edit Button */}
+                        <Dialog
+                          open={editingPlayer?.id === player.id}
+                          onOpenChange={(open) =>
+                            !open && setEditingPlayer(null)
+                          }
+                        >
+                          <DialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => handleEditPlayer(player)}
+                              className="w-8 h-8 p-0 bg-white/20 backdrop-blur-md hover:bg-white/30"
                             >
-                              <Trash2 className="w-4 h-4 mr-2" />
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
+                              <Edit3 className="w-4 h-4 text-white" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
+                            <DialogHeader>
+                              <DialogTitle className="text-white">
+                                Edit Player Details
+                              </DialogTitle>
+                            </DialogHeader>
+                            <PlayerForm isEdit={true} />
+                          </DialogContent>
+                        </Dialog>
+
+                        {/* Delete Button */}
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="w-8 h-8 p-0 bg-red-500/20 backdrop-blur-md hover:bg-red-500/40"
+                            >
+                              <Trash2 className="w-4 h-4 text-white" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="bg-black/90 border-white/20">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle className="text-white">
+                                Delete Player
+                              </AlertDialogTitle>
+                              <AlertDialogDescription className="text-white/70">
+                                Are you sure you want to delete{" "}
+                                <span className="font-semibold text-white">
+                                  {player.firstName} {player.lastName}
+                                </span>
+                                ? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+                                Cancel
+                              </AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDeletePlayer(player.id)}
+                                className="bg-red-500 hover:bg-red-600 text-white"
+                              >
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    )}
 
                     {/* Default State - Name and Position (Always Visible) */}
                     <div className="absolute bottom-6 left-6 right-6 text-white transition-all duration-300">
