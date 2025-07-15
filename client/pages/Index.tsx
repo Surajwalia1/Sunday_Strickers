@@ -87,6 +87,86 @@ export default function Index() {
                 Players
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-football-orange-400 transition-all duration-300 group-hover:w-full"></span>
               </Link>
+
+              {/* Login/Logout Button */}
+              {isLoggedIn ? (
+                <Button
+                  onClick={logout}
+                  variant="ghost"
+                  size="sm"
+                  className="text-white/70 hover:text-red-400 hover:bg-red-500/10"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              ) : (
+                <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-white/70 hover:text-football-blue-400 hover:bg-football-blue-500/10"
+                    >
+                      <LogIn className="w-4 h-4 mr-2" />
+                      Login
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-black/90 border-white/20 text-white max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle className="text-white">
+                        Admin Login
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="password" className="text-white">
+                          Password
+                        </Label>
+                        <Input
+                          id="password"
+                          type="password"
+                          value={password}
+                          onChange={(e) => {
+                            setPassword(e.target.value);
+                            setLoginError("");
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleLogin();
+                            }
+                          }}
+                          className="bg-white/10 border-white/20 text-white"
+                          placeholder="Enter admin password"
+                        />
+                        {loginError && (
+                          <p className="text-red-400 text-sm mt-2">
+                            {loginError}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={handleLogin}
+                          className="bg-football-blue-500 hover:bg-football-blue-600 flex-1"
+                        >
+                          Login
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setIsLoginOpen(false);
+                            setPassword("");
+                            setLoginError("");
+                          }}
+                          className="border-white/20 text-white hover:bg-white/10"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              )}
             </div>
           </div>
         </div>
