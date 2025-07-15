@@ -695,14 +695,15 @@ export default function Players() {
               </Button>
             </Link>
 
-            {/* Add Player Button */}
-            <Dialog open={isAddPlayerOpen} onOpenChange={setIsAddPlayerOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-football-blue-500 to-football-maroon-500 hover:from-football-blue-600 hover:to-football-maroon-600">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Player
-                </Button>
-              </DialogTrigger>
+                        {/* Add Player Button - Only visible when logged in */}
+            {isLoggedIn && (
+              <Dialog open={isAddPlayerOpen} onOpenChange={setIsAddPlayerOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-gradient-to-r from-football-blue-500 to-football-maroon-500 hover:from-football-blue-600 hover:to-football-maroon-600">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Player
+                  </Button>
+                </DialogTrigger>
               <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
                 <DialogHeader>
                   <DialogTitle className="text-white">
@@ -912,7 +913,7 @@ export default function Players() {
                       </div>
                     </div>
 
-                    {/* Hover State - Stats Display */}
+                                        {/* Hover State - Stats Display */}
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="px-6 pb-6 pt-16">
                         {/* Stats Grid */}
