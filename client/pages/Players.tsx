@@ -471,26 +471,77 @@ export default function Players() {
     );
 
     return (
-      <div className="fixed inset-0 z-50 bg-black">
-        {/* Smokey Entrance Animation */}
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 via-transparent to-gray-900/80 animate-pulse"></div>
+      <div className="fixed inset-0 z-50 bg-black overflow-hidden">
+        {/* Stage 1: Smokey Entrance Animation (4 seconds) */}
+        {animationStage === "smoke" && (
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 animate-pulse"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-gray-900/80 to-black/50"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-gray-700/60 via-transparent to-gray-700/60 animate-pulse"></div>
 
-        {/* Lightning Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-full h-1 bg-white animate-pulse opacity-0 animate-ping"></div>
-          <div
-            className="absolute bottom-10 right-10 w-full h-1 bg-blue-400 animate-pulse opacity-0"
-            style={{ animationDelay: "2s" }}
-          ></div>
-        </div>
+            {/* Swirling smoke particles */}
+            <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gray-600/40 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute top-3/4 right-1/4 w-48 h-48 bg-gray-700/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
+            <div className="absolute bottom-1/4 left-1/3 w-24 h-24 bg-gray-500/50 rounded-full blur-2xl animate-pulse delay-2000"></div>
 
-        {/* Football Field Background */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-60"
-          style={{
-            backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets%2Fcabdb90a4fd44d488913e5147f1caf35%2F4bc84d7711b84df2bd48bf3b6259d7d5?format=webp&width=800')`,
-          }}
-        ></div>
+            {/* Dramatic text */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <h1 className="text-6xl font-black text-white/80 animate-pulse mb-4">
+                  THE MATCH
+                </h1>
+                <div className="text-xl text-white/60 animate-pulse delay-1000">
+                  Preparing the battlefield...
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Stage 2: Lightning Strike (0.5 seconds) */}
+        {animationStage === "lightning" && (
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-white animate-ping duration-500"></div>
+            <div className="absolute top-0 left-1/4 w-1 h-full bg-white animate-pulse"></div>
+            <div className="absolute top-1/3 left-0 w-full h-1 bg-white animate-pulse"></div>
+            <div className="absolute top-2/3 right-0 w-full h-1 bg-blue-400 animate-pulse"></div>
+            <div className="absolute bottom-0 right-1/3 w-1 h-full bg-white animate-pulse"></div>
+          </div>
+        )}
+
+        {/* Stage 3: Football Field (Generated Background) */}
+        {animationStage === "field" && (
+          <div className="absolute inset-0">
+            {/* Generated Football Field Background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-green-400 to-green-600"></div>
+
+            {/* Field markings */}
+            <div className="absolute inset-0">
+              {/* Center line */}
+              <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-white transform -translate-x-1/2"></div>
+
+              {/* Center circle */}
+              <div className="absolute left-1/2 top-1/2 w-32 h-32 border-4 border-white rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+
+              {/* Goal areas */}
+              <div className="absolute left-0 top-1/2 w-16 h-24 border-4 border-white border-l-0 transform -translate-y-1/2"></div>
+              <div className="absolute right-0 top-1/2 w-16 h-24 border-4 border-white border-r-0 transform -translate-y-1/2"></div>
+
+              {/* Penalty areas */}
+              <div className="absolute left-0 top-1/2 w-32 h-48 border-4 border-white border-l-0 transform -translate-y-1/2"></div>
+              <div className="absolute right-0 top-1/2 w-32 h-48 border-4 border-white border-r-0 transform -translate-y-1/2"></div>
+
+              {/* Corner arcs */}
+              <div className="absolute top-0 left-0 w-8 h-8 border-b-4 border-r-4 border-white rounded-br-full"></div>
+              <div className="absolute top-0 right-0 w-8 h-8 border-b-4 border-l-4 border-white rounded-bl-full"></div>
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-t-4 border-r-4 border-white rounded-tr-full"></div>
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-t-4 border-l-4 border-white rounded-tl-full"></div>
+            </div>
+
+            {/* Field texture overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 via-transparent to-green-500/20"></div>
+          </div>
+        )}
 
         {/* Back Button */}
         <div className="absolute top-6 left-6 z-20">
