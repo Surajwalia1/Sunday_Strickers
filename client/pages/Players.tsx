@@ -695,8 +695,15 @@ export default function Players() {
               </Button>
             </Link>
 
-            {/* Add Player Button - Only visible when logged in */}
-            {isLoggedIn && (
+                        <div className="flex items-center space-x-4">
+              {/* Match Button */}
+              <Button className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg">
+                <Trophy className="w-4 h-4 mr-2" />
+                Match
+              </Button>
+
+              {/* Add Player Button - Only visible when logged in */}
+              {isLoggedIn && (
               <Dialog open={isAddPlayerOpen} onOpenChange={setIsAddPlayerOpen}>
                 <DialogTrigger asChild>
                   <Button className="bg-gradient-to-r from-football-blue-500 to-football-maroon-500 hover:from-football-blue-600 hover:to-football-maroon-600">
