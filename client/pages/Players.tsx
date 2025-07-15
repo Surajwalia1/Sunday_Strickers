@@ -144,6 +144,7 @@ const getTeamColor = (team: string) => {
 };
 
 export default function Players() {
+  const { isLoggedIn } = useAuth();
   const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
