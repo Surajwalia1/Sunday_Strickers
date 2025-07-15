@@ -582,19 +582,19 @@ export default function Players() {
 
         {/* Field Content - Only show in field stage */}
         {animationStage === "field" && (
-          <div className="relative w-full h-full flex items-center justify-center p-8">
-            <div className="w-full max-w-6xl h-full max-h-96 relative">
+          <div className="relative w-full h-full p-4">
+            <div className="w-full h-full relative">
               {/* Team A (Left Side) */}
               {(matchTeamFilter === "ALL" || matchTeamFilter === "Team A") && (
                 <div className="absolute left-0 top-0 w-1/2 h-full">
-                  <div className="text-center mb-4">
+                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
                     <h2 className="text-2xl font-bold text-blue-400 animate-in fade-in slide-in-from-left duration-1000">
                       Team A
                     </h2>
                   </div>
 
-                  {/* Goalkeeper */}
-                  <div className="absolute left-8 top-1/2 transform -translate-y-1/2">
+                  {/* Goalkeeper - In goal area */}
+                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                     {getPositionPlayers(teamAPlayers, "GOALKEEPERS")
                       .slice(0, 1)
                       .map((player) => (
@@ -607,73 +607,101 @@ export default function Players() {
                       ))}
                   </div>
 
-                  {/* Defenders */}
-                  <div className="absolute left-16 top-1/2 transform -translate-y-1/2 space-y-8">
+                  {/* Defenders - Defensive line spread across width */}
+                  <div className="absolute left-16 top-0 w-full h-full">
                     {getPositionPlayers(teamAPlayers, "DEFENDERS")
-                      .slice(0, 3)
-                      .map((player, index) => (
-                        <div
-                          key={player.id}
-                          style={{ marginTop: index * 64 - 64 }}
-                        >
-                          <PlayerIcon
-                            player={player}
-                            side="left"
-                            delay={400 + index * 200}
-                          />
-                        </div>
-                      ))}
+                      .slice(0, 4)
+                      .map((player, index) => {
+                        const positions = [
+                          { top: "20%", left: "10%" }, // Left back
+                          { top: "35%", left: "20%" }, // Center back
+                          { top: "65%", left: "20%" }, // Center back
+                          { top: "80%", left: "10%" }, // Right back
+                        ];
+                        const pos = positions[index] || positions[0];
+                        return (
+                          <div
+                            key={player.id}
+                            className="absolute"
+                            style={{ top: pos.top, left: pos.left }}
+                          >
+                            <PlayerIcon
+                              player={player}
+                              side="left"
+                              delay={400 + index * 200}
+                            />
+                          </div>
+                        );
+                      })}
                   </div>
 
-                  {/* Midfielders */}
-                  <div className="absolute left-32 top-1/2 transform -translate-y-1/2 space-y-6">
+                  {/* Midfielders - Middle of the field */}
+                  <div className="absolute left-32 top-0 w-full h-full">
                     {getPositionPlayers(teamAPlayers, "MIDFIELDERS")
-                      .slice(0, 2)
-                      .map((player, index) => (
-                        <div
-                          key={player.id}
-                          style={{ marginTop: index * 48 - 24 }}
-                        >
-                          <PlayerIcon
-                            player={player}
-                            side="left"
-                            delay={1000 + index * 200}
-                          />
-                        </div>
-                      ))}
+                      .slice(0, 3)
+                      .map((player, index) => {
+                        const positions = [
+                          { top: "25%", left: "25%" }, // Left mid
+                          { top: "50%", left: "35%" }, // Center mid
+                          { top: "75%", left: "25%" }, // Right mid
+                        ];
+                        const pos = positions[index] || positions[1];
+                        return (
+                          <div
+                            key={player.id}
+                            className="absolute"
+                            style={{ top: pos.top, left: pos.left }}
+                          >
+                            <PlayerIcon
+                              player={player}
+                              side="left"
+                              delay={1000 + index * 200}
+                            />
+                          </div>
+                        );
+                      })}
                   </div>
 
-                  {/* Forwards */}
-                  <div className="absolute left-48 top-1/2 transform -translate-y-1/2 space-y-6">
+                  {/* Forwards - Attacking positions */}
+                  <div className="absolute left-40 top-0 w-full h-full">
                     {getPositionPlayers(teamAPlayers, "FORWARDS")
-                      .slice(0, 2)
-                      .map((player, index) => (
-                        <div
-                          key={player.id}
-                          style={{ marginTop: index * 48 - 24 }}
-                        >
-                          <PlayerIcon
-                            player={player}
-                            side="left"
-                            delay={1400 + index * 200}
-                          />
-                        </div>
-                      ))}
+                      .slice(0, 3)
+                      .map((player, index) => {
+                        const positions = [
+                          { top: "30%", left: "40%" }, // Left wing
+                          { top: "50%", left: "50%" }, // Striker
+                          { top: "70%", left: "40%" }, // Right wing
+                        ];
+                        const pos = positions[index] || positions[1];
+                        return (
+                          <div
+                            key={player.id}
+                            className="absolute"
+                            style={{ top: pos.top, left: pos.left }}
+                          >
+                            <PlayerIcon
+                              player={player}
+                              side="left"
+                              delay={1400 + index * 200}
+                            />
+                          </div>
+                        );
+                      })}
                   </div>
                 </div>
               )}
 
-              {/* Team B (Right Side) */}
+              {/* Team B (Right Side) - Mirror formation */}
               {(matchTeamFilter === "ALL" || matchTeamFilter === "Team B") && (
                 <div className="absolute right-0 top-0 w-1/2 h-full">
-                  <div className="text-center mb-4">
+                  <div className="absolute top-4 right-1/2 transform translate-x-1/2">
                     <h2 className="text-2xl font-bold text-red-400 animate-in fade-in slide-in-from-right duration-1000">
                       Team B
                     </h2>
                   </div>
 
-                  {/* Goalkeeper */}
-                  <div className="absolute right-8 top-1/2 transform -translate-y-1/2">
+                  {/* Goalkeeper - In goal area */}
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
                     {getPositionPlayers(teamBPlayers, "GOALKEEPERS")
                       .slice(0, 1)
                       .map((player) => (
@@ -686,58 +714,86 @@ export default function Players() {
                       ))}
                   </div>
 
-                  {/* Defenders */}
-                  <div className="absolute right-16 top-1/2 transform -translate-y-1/2 space-y-8">
+                  {/* Defenders - Defensive line spread across width */}
+                  <div className="absolute right-16 top-0 w-full h-full">
                     {getPositionPlayers(teamBPlayers, "DEFENDERS")
-                      .slice(0, 3)
-                      .map((player, index) => (
-                        <div
-                          key={player.id}
-                          style={{ marginTop: index * 64 - 64 }}
-                        >
-                          <PlayerIcon
-                            player={player}
-                            side="right"
-                            delay={500 + index * 200}
-                          />
-                        </div>
-                      ))}
+                      .slice(0, 4)
+                      .map((player, index) => {
+                        const positions = [
+                          { top: "20%", right: "10%" }, // Left back
+                          { top: "35%", right: "20%" }, // Center back
+                          { top: "65%", right: "20%" }, // Center back
+                          { top: "80%", right: "10%" }, // Right back
+                        ];
+                        const pos = positions[index] || positions[0];
+                        return (
+                          <div
+                            key={player.id}
+                            className="absolute"
+                            style={{ top: pos.top, right: pos.right }}
+                          >
+                            <PlayerIcon
+                              player={player}
+                              side="right"
+                              delay={500 + index * 200}
+                            />
+                          </div>
+                        );
+                      })}
                   </div>
 
-                  {/* Midfielders */}
-                  <div className="absolute right-32 top-1/2 transform -translate-y-1/2 space-y-6">
+                  {/* Midfielders - Middle of the field */}
+                  <div className="absolute right-32 top-0 w-full h-full">
                     {getPositionPlayers(teamBPlayers, "MIDFIELDERS")
-                      .slice(0, 2)
-                      .map((player, index) => (
-                        <div
-                          key={player.id}
-                          style={{ marginTop: index * 48 - 24 }}
-                        >
-                          <PlayerIcon
-                            player={player}
-                            side="right"
-                            delay={1100 + index * 200}
-                          />
-                        </div>
-                      ))}
+                      .slice(0, 3)
+                      .map((player, index) => {
+                        const positions = [
+                          { top: "25%", right: "25%" }, // Left mid
+                          { top: "50%", right: "35%" }, // Center mid
+                          { top: "75%", right: "25%" }, // Right mid
+                        ];
+                        const pos = positions[index] || positions[1];
+                        return (
+                          <div
+                            key={player.id}
+                            className="absolute"
+                            style={{ top: pos.top, right: pos.right }}
+                          >
+                            <PlayerIcon
+                              player={player}
+                              side="right"
+                              delay={1100 + index * 200}
+                            />
+                          </div>
+                        );
+                      })}
                   </div>
 
-                  {/* Forwards */}
-                  <div className="absolute right-48 top-1/2 transform -translate-y-1/2 space-y-6">
+                  {/* Forwards - Attacking positions */}
+                  <div className="absolute right-40 top-0 w-full h-full">
                     {getPositionPlayers(teamBPlayers, "FORWARDS")
-                      .slice(0, 2)
-                      .map((player, index) => (
-                        <div
-                          key={player.id}
-                          style={{ marginTop: index * 48 - 24 }}
-                        >
-                          <PlayerIcon
-                            player={player}
-                            side="right"
-                            delay={1500 + index * 200}
-                          />
-                        </div>
-                      ))}
+                      .slice(0, 3)
+                      .map((player, index) => {
+                        const positions = [
+                          { top: "30%", right: "40%" }, // Left wing
+                          { top: "50%", right: "50%" }, // Striker
+                          { top: "70%", right: "40%" }, // Right wing
+                        ];
+                        const pos = positions[index] || positions[1];
+                        return (
+                          <div
+                            key={player.id}
+                            className="absolute"
+                            style={{ top: pos.top, right: pos.right }}
+                          >
+                            <PlayerIcon
+                              player={player}
+                              side="right"
+                              delay={1500 + index * 200}
+                            />
+                          </div>
+                        );
+                      })}
                   </div>
                 </div>
               )}
