@@ -25,6 +25,20 @@ import {
 } from "lucide-react";
 
 export default function Index() {
+  const { isLoggedIn, login, logout } = useAuth();
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
+
+  const handleLogin = () => {
+    if (login(password)) {
+      setIsLoginOpen(false);
+      setPassword("");
+      setLoginError("");
+    } else {
+      setLoginError("Incorrect password. Try again!");
+    }
+  };
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
       {/* Animated Background Elements */}
