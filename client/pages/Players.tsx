@@ -104,7 +104,14 @@ const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(playerData),
     });
-    if (!response.ok) throw new Error("Failed to update player");
+    if (!response.ok) {
+      const errorData = await response
+        .json()
+        .catch(() => ({ error: "Unknown error" }));
+      throw new Error(
+        errorData.error || `HTTP ${response.status}: ${response.statusText}`,
+      );
+    }
     return response.json();
   },
 
@@ -112,7 +119,14 @@ const api = {
     const response = await fetch(`/api/players/${id}`, {
       method: "DELETE",
     });
-    if (!response.ok) throw new Error("Failed to delete player");
+    if (!response.ok) {
+      const errorData = await response
+        .json()
+        .catch(() => ({ error: "Unknown error" }));
+      throw new Error(
+        errorData.error || `HTTP ${response.status}: ${response.statusText}`,
+      );
+    }
   },
 };
 
