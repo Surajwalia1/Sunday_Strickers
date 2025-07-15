@@ -699,7 +699,10 @@ export default function Players() {
 
             <div className="flex items-center space-x-4">
               {/* Match Button */}
-              <Button className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg">
+              <Button
+                onClick={() => setShowMatchView(true)}
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg"
+              >
                 <Trophy className="w-4 h-4 mr-2" />
                 Match
               </Button>
