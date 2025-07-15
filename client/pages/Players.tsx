@@ -420,12 +420,19 @@ export default function Players() {
     const PlayerIcon = ({
       player,
       side,
+      delay = 0,
     }: {
       player: Player;
       side: "left" | "right";
+      delay?: number;
     }) => (
       <div
-        className="relative group cursor-pointer"
+        className={`relative group cursor-pointer transform transition-all duration-1000 ${
+          animationStage === "field"
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-8"
+        }`}
+        style={{ transitionDelay: `${delay}ms` }}
         onMouseEnter={() => setHoveredPlayer(player)}
         onMouseLeave={() => setHoveredPlayer(null)}
       >
@@ -434,8 +441,7 @@ export default function Players() {
             side === "left"
               ? "border-blue-400 shadow-blue-400/50"
               : "border-red-400 shadow-red-400/50"
-          } shadow-lg transform transition-all duration-300 hover:scale-110 animate-bounce`}
-          style={{ animationDelay: `${Math.random() * 2}s` }}
+          } shadow-lg transform transition-all duration-300 hover:scale-110`}
         >
           <img
             src={player.photo}
