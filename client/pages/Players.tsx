@@ -173,7 +173,7 @@ export default function Players() {
     quote: "",
   });
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [showMatchView, setShowMatchView] = useState(false);
   const [matchTeamFilter, setMatchTeamFilter] = useState("ALL");
@@ -386,7 +386,7 @@ export default function Players() {
     }
   };
 
-  // Match View Component
+    // Match View Component
   const MatchView = () => {
     const teamAPlayers = players.filter((p) => p.team === "Team A");
     const teamBPlayers = players.filter((p) => p.team === "Team B");
@@ -396,13 +396,7 @@ export default function Players() {
       return team.filter((p) => p.position === position);
     };
 
-    const PlayerIcon = ({
-      player,
-      side,
-    }: {
-      player: Player;
-      side: "left" | "right";
-    }) => (
+    const PlayerIcon = ({ player, side }: { player: Player; side: "left" | "right" }) => (
       <div
         className="relative group cursor-pointer"
         onMouseEnter={() => setHoveredPlayer(player)}
@@ -430,9 +424,7 @@ export default function Players() {
         {hoveredPlayer?.id === player.id && (
           <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-black/90 backdrop-blur-md border border-white/20 rounded-lg p-3 min-w-48 z-10 animate-in fade-in slide-in-from-bottom-2 duration-200">
             <div className="text-white text-sm">
-              <div className="font-bold">
-                {player.firstName} {player.lastName}
-              </div>
+              <div className="font-bold">{player.firstName} {player.lastName}</div>
               <div className="text-white/70">{player.positionDisplay}</div>
               <div className="text-white/60 text-xs mt-1">
                 Matches: {player.appearances} | Goals: {player.goals}
@@ -451,17 +443,14 @@ export default function Players() {
         {/* Lightning Effects */}
         <div className="absolute inset-0">
           <div className="absolute top-10 left-10 w-full h-1 bg-white animate-pulse opacity-0 animate-ping"></div>
-          <div
-            className="absolute bottom-10 right-10 w-full h-1 bg-blue-400 animate-pulse opacity-0"
-            style={{ animationDelay: "2s" }}
-          ></div>
+          <div className="absolute bottom-10 right-10 w-full h-1 bg-blue-400 animate-pulse opacity-0" style={{ animationDelay: "2s" }}></div>
         </div>
 
         {/* Football Field Background */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-60"
           style={{
-            backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets%2Fcabdb90a4fd44d488913e5147f1caf35%2F4bc84d7711b84df2bd48bf3b6259d7d5?format=webp&width=800')`,
+            backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets%2Fcabdb90a4fd44d488913e5147f1caf35%2F4bc84d7711b84df2bd48bf3b6259d7d5?format=webp&width=800')`
           }}
         ></div>
 
@@ -485,7 +474,9 @@ export default function Players() {
               onClick={() => setMatchTeamFilter(filter)}
               variant={matchTeamFilter === filter ? "default" : "ghost"}
               className={`text-white backdrop-blur-md ${
-                matchTeamFilter === filter ? "bg-white/20" : "hover:bg-white/10"
+                matchTeamFilter === filter
+                  ? "bg-white/20"
+                  : "hover:bg-white/10"
               }`}
             >
               {filter}
@@ -496,6 +487,7 @@ export default function Players() {
         {/* Field Content */}
         <div className="relative w-full h-full flex items-center justify-center p-8">
           <div className="w-full max-w-6xl h-full max-h-96 relative">
+
             {/* Team A (Left Side) */}
             {(matchTeamFilter === "ALL" || matchTeamFilter === "Team A") && (
               <div className="absolute left-0 top-0 w-1/2 h-full">
@@ -505,53 +497,36 @@ export default function Players() {
 
                 {/* Goalkeeper */}
                 <div className="absolute left-8 top-1/2 transform -translate-y-1/2">
-                  {getPositionPlayers(teamAPlayers, "GOALKEEPERS")
-                    .slice(0, 1)
-                    .map((player) => (
-                      <PlayerIcon key={player.id} player={player} side="left" />
-                    ))}
+                  {getPositionPlayers(teamAPlayers, "GOALKEEPERS").slice(0, 1).map((player) => (
+                    <PlayerIcon key={player.id} player={player} side="left" />
+                  ))}
                 </div>
 
                 {/* Defenders */}
                 <div className="absolute left-16 top-1/2 transform -translate-y-1/2 space-y-8">
-                  {getPositionPlayers(teamAPlayers, "DEFENDERS")
-                    .slice(0, 3)
-                    .map((player, index) => (
-                      <div
-                        key={player.id}
-                        style={{ marginTop: index * 64 - 64 }}
-                      >
-                        <PlayerIcon player={player} side="left" />
-                      </div>
-                    ))}
+                  {getPositionPlayers(teamAPlayers, "DEFENDERS").slice(0, 3).map((player, index) => (
+                    <div key={player.id} style={{ marginTop: index * 64 - 64 }}>
+                      <PlayerIcon player={player} side="left" />
+                    </div>
+                  ))}
                 </div>
 
                 {/* Midfielders */}
                 <div className="absolute left-32 top-1/2 transform -translate-y-1/2 space-y-6">
-                  {getPositionPlayers(teamAPlayers, "MIDFIELDERS")
-                    .slice(0, 2)
-                    .map((player, index) => (
-                      <div
-                        key={player.id}
-                        style={{ marginTop: index * 48 - 24 }}
-                      >
-                        <PlayerIcon player={player} side="left" />
-                      </div>
-                    ))}
+                  {getPositionPlayers(teamAPlayers, "MIDFIELDERS").slice(0, 2).map((player, index) => (
+                    <div key={player.id} style={{ marginTop: index * 48 - 24 }}>
+                      <PlayerIcon player={player} side="left" />
+                    </div>
+                  ))}
                 </div>
 
                 {/* Forwards */}
                 <div className="absolute left-48 top-1/2 transform -translate-y-1/2 space-y-6">
-                  {getPositionPlayers(teamAPlayers, "FORWARDS")
-                    .slice(0, 2)
-                    .map((player, index) => (
-                      <div
-                        key={player.id}
-                        style={{ marginTop: index * 48 - 24 }}
-                      >
-                        <PlayerIcon player={player} side="left" />
-                      </div>
-                    ))}
+                  {getPositionPlayers(teamAPlayers, "FORWARDS").slice(0, 2).map((player, index) => (
+                    <div key={player.id} style={{ marginTop: index * 48 - 24 }}>
+                      <PlayerIcon player={player} side="left" />
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -565,57 +540,36 @@ export default function Players() {
 
                 {/* Goalkeeper */}
                 <div className="absolute right-8 top-1/2 transform -translate-y-1/2">
-                  {getPositionPlayers(teamBPlayers, "GOALKEEPERS")
-                    .slice(0, 1)
-                    .map((player) => (
-                      <PlayerIcon
-                        key={player.id}
-                        player={player}
-                        side="right"
-                      />
-                    ))}
+                  {getPositionPlayers(teamBPlayers, "GOALKEEPERS").slice(0, 1).map((player) => (
+                    <PlayerIcon key={player.id} player={player} side="right" />
+                  ))}
                 </div>
 
                 {/* Defenders */}
                 <div className="absolute right-16 top-1/2 transform -translate-y-1/2 space-y-8">
-                  {getPositionPlayers(teamBPlayers, "DEFENDERS")
-                    .slice(0, 3)
-                    .map((player, index) => (
-                      <div
-                        key={player.id}
-                        style={{ marginTop: index * 64 - 64 }}
-                      >
-                        <PlayerIcon player={player} side="right" />
-                      </div>
-                    ))}
+                  {getPositionPlayers(teamBPlayers, "DEFENDERS").slice(0, 3).map((player, index) => (
+                    <div key={player.id} style={{ marginTop: index * 64 - 64 }}>
+                      <PlayerIcon player={player} side="right" />
+                    </div>
+                  ))}
                 </div>
 
                 {/* Midfielders */}
                 <div className="absolute right-32 top-1/2 transform -translate-y-1/2 space-y-6">
-                  {getPositionPlayers(teamBPlayers, "MIDFIELDERS")
-                    .slice(0, 2)
-                    .map((player, index) => (
-                      <div
-                        key={player.id}
-                        style={{ marginTop: index * 48 - 24 }}
-                      >
-                        <PlayerIcon player={player} side="right" />
-                      </div>
-                    ))}
+                  {getPositionPlayers(teamBPlayers, "MIDFIELDERS").slice(0, 2).map((player, index) => (
+                    <div key={player.id} style={{ marginTop: index * 48 - 24 }}>
+                      <PlayerIcon player={player} side="right" />
+                    </div>
+                  ))}
                 </div>
 
                 {/* Forwards */}
                 <div className="absolute right-48 top-1/2 transform -translate-y-1/2 space-y-6">
-                  {getPositionPlayers(teamBPlayers, "FORWARDS")
-                    .slice(0, 2)
-                    .map((player, index) => (
-                      <div
-                        key={player.id}
-                        style={{ marginTop: index * 48 - 24 }}
-                      >
-                        <PlayerIcon player={player} side="right" />
-                      </div>
-                    ))}
+                  {getPositionPlayers(teamBPlayers, "FORWARDS").slice(0, 2).map((player, index) => (
+                    <div key={player.id} style={{ marginTop: index * 48 - 24 }}>
+                      <PlayerIcon player={player} side="right" />
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -883,8 +837,12 @@ export default function Players() {
     </div>
   );
 
-  return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
+    return (
+    <>
+      {/* Match View Overlay */}
+      {showMatchView && <MatchView />}
+
+      <div className="min-h-screen bg-black text-white overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 pointer-events-none">
         {/* Floating Particles */}
@@ -946,8 +904,8 @@ export default function Players() {
               </Button>
             </Link>
 
-            <div className="flex items-center space-x-4">
-              {/* Match Button */}
+                        <div className="flex items-center space-x-4">
+                            {/* Match Button */}
               <Button
                 onClick={() => setShowMatchView(true)}
                 className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg"
@@ -958,25 +916,22 @@ export default function Players() {
 
               {/* Add Player Button - Only visible when logged in */}
               {isLoggedIn && (
-                <Dialog
-                  open={isAddPlayerOpen}
-                  onOpenChange={setIsAddPlayerOpen}
-                >
-                  <DialogTrigger asChild>
-                    <Button className="bg-gradient-to-r from-football-blue-500 to-football-maroon-500 hover:from-football-blue-600 hover:to-football-maroon-600">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Player
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
-                    <DialogHeader>
-                      <DialogTitle className="text-white">
-                        Add New Player
-                      </DialogTitle>
-                    </DialogHeader>
-                    <PlayerForm />
-                  </DialogContent>
-                </Dialog>
+              <Dialog open={isAddPlayerOpen} onOpenChange={setIsAddPlayerOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-gradient-to-r from-football-blue-500 to-football-maroon-500 hover:from-football-blue-600 hover:to-football-maroon-600">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Player
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="text-white">
+                      Add New Player
+                    </DialogTitle>
+                  </DialogHeader>
+                  <PlayerForm />
+                </DialogContent>
+                            </Dialog>
               )}
             </div>
           </div>
