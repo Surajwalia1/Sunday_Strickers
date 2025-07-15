@@ -386,6 +386,255 @@ export default function Players() {
     }
   };
 
+  // Match View Component
+  const MatchView = () => {
+    const teamAPlayers = players.filter((p) => p.team === "Team A");
+    const teamBPlayers = players.filter((p) => p.team === "Team B");
+    const [hoveredPlayer, setHoveredPlayer] = useState<Player | null>(null);
+
+    const getPositionPlayers = (team: Player[], position: string) => {
+      return team.filter((p) => p.position === position);
+    };
+
+    const PlayerIcon = ({
+      player,
+      side,
+    }: {
+      player: Player;
+      side: "left" | "right";
+    }) => (
+      <div
+        className="relative group cursor-pointer"
+        onMouseEnter={() => setHoveredPlayer(player)}
+        onMouseLeave={() => setHoveredPlayer(null)}
+      >
+        <div
+          className={`w-16 h-16 rounded-full border-4 ${
+            side === "left"
+              ? "border-blue-400 shadow-blue-400/50"
+              : "border-red-400 shadow-red-400/50"
+          } shadow-lg transform transition-all duration-300 hover:scale-110 animate-bounce`}
+          style={{ animationDelay: `${Math.random() * 2}s` }}
+        >
+          <img
+            src={player.photo}
+            alt={player.name}
+            className="w-full h-full rounded-full object-cover"
+          />
+        </div>
+        <div className="text-white text-xs text-center mt-1 font-medium">
+          {player.firstName}
+        </div>
+
+        {/* Hover Stats Card */}
+        {hoveredPlayer?.id === player.id && (
+          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-black/90 backdrop-blur-md border border-white/20 rounded-lg p-3 min-w-48 z-10 animate-in fade-in slide-in-from-bottom-2 duration-200">
+            <div className="text-white text-sm">
+              <div className="font-bold">
+                {player.firstName} {player.lastName}
+              </div>
+              <div className="text-white/70">{player.positionDisplay}</div>
+              <div className="text-white/60 text-xs mt-1">
+                Matches: {player.appearances} | Goals: {player.goals}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+
+    return (
+      <div className="fixed inset-0 z-50 bg-black">
+        {/* Smokey Entrance Animation */}
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 via-transparent to-gray-900/80 animate-pulse"></div>
+
+        {/* Lightning Effects */}
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-full h-1 bg-white animate-pulse opacity-0 animate-ping"></div>
+          <div
+            className="absolute bottom-10 right-10 w-full h-1 bg-blue-400 animate-pulse opacity-0"
+            style={{ animationDelay: "2s" }}
+          ></div>
+        </div>
+
+        {/* Football Field Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-60"
+          style={{
+            backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets%2Fcabdb90a4fd44d488913e5147f1caf35%2F4bc84d7711b84df2bd48bf3b6259d7d5?format=webp&width=800')`,
+          }}
+        ></div>
+
+        {/* Back Button */}
+        <div className="absolute top-6 left-6 z-20">
+          <Button
+            onClick={() => setShowMatchView(false)}
+            variant="ghost"
+            className="text-white hover:bg-white/10 backdrop-blur-md"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Players
+          </Button>
+        </div>
+
+        {/* Team Filter */}
+        <div className="absolute top-6 right-6 z-20 flex space-x-2">
+          {["ALL", "Team A", "Team B"].map((filter) => (
+            <Button
+              key={filter}
+              onClick={() => setMatchTeamFilter(filter)}
+              variant={matchTeamFilter === filter ? "default" : "ghost"}
+              className={`text-white backdrop-blur-md ${
+                matchTeamFilter === filter ? "bg-white/20" : "hover:bg-white/10"
+              }`}
+            >
+              {filter}
+            </Button>
+          ))}
+        </div>
+
+        {/* Field Content */}
+        <div className="relative w-full h-full flex items-center justify-center p-8">
+          <div className="w-full max-w-6xl h-full max-h-96 relative">
+            {/* Team A (Left Side) */}
+            {(matchTeamFilter === "ALL" || matchTeamFilter === "Team A") && (
+              <div className="absolute left-0 top-0 w-1/2 h-full">
+                <div className="text-center mb-4">
+                  <h2 className="text-2xl font-bold text-blue-400">Team A</h2>
+                </div>
+
+                {/* Goalkeeper */}
+                <div className="absolute left-8 top-1/2 transform -translate-y-1/2">
+                  {getPositionPlayers(teamAPlayers, "GOALKEEPERS")
+                    .slice(0, 1)
+                    .map((player) => (
+                      <PlayerIcon key={player.id} player={player} side="left" />
+                    ))}
+                </div>
+
+                {/* Defenders */}
+                <div className="absolute left-16 top-1/2 transform -translate-y-1/2 space-y-8">
+                  {getPositionPlayers(teamAPlayers, "DEFENDERS")
+                    .slice(0, 3)
+                    .map((player, index) => (
+                      <div
+                        key={player.id}
+                        style={{ marginTop: index * 64 - 64 }}
+                      >
+                        <PlayerIcon player={player} side="left" />
+                      </div>
+                    ))}
+                </div>
+
+                {/* Midfielders */}
+                <div className="absolute left-32 top-1/2 transform -translate-y-1/2 space-y-6">
+                  {getPositionPlayers(teamAPlayers, "MIDFIELDERS")
+                    .slice(0, 2)
+                    .map((player, index) => (
+                      <div
+                        key={player.id}
+                        style={{ marginTop: index * 48 - 24 }}
+                      >
+                        <PlayerIcon player={player} side="left" />
+                      </div>
+                    ))}
+                </div>
+
+                {/* Forwards */}
+                <div className="absolute left-48 top-1/2 transform -translate-y-1/2 space-y-6">
+                  {getPositionPlayers(teamAPlayers, "FORWARDS")
+                    .slice(0, 2)
+                    .map((player, index) => (
+                      <div
+                        key={player.id}
+                        style={{ marginTop: index * 48 - 24 }}
+                      >
+                        <PlayerIcon player={player} side="left" />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {/* Team B (Right Side) */}
+            {(matchTeamFilter === "ALL" || matchTeamFilter === "Team B") && (
+              <div className="absolute right-0 top-0 w-1/2 h-full">
+                <div className="text-center mb-4">
+                  <h2 className="text-2xl font-bold text-red-400">Team B</h2>
+                </div>
+
+                {/* Goalkeeper */}
+                <div className="absolute right-8 top-1/2 transform -translate-y-1/2">
+                  {getPositionPlayers(teamBPlayers, "GOALKEEPERS")
+                    .slice(0, 1)
+                    .map((player) => (
+                      <PlayerIcon
+                        key={player.id}
+                        player={player}
+                        side="right"
+                      />
+                    ))}
+                </div>
+
+                {/* Defenders */}
+                <div className="absolute right-16 top-1/2 transform -translate-y-1/2 space-y-8">
+                  {getPositionPlayers(teamBPlayers, "DEFENDERS")
+                    .slice(0, 3)
+                    .map((player, index) => (
+                      <div
+                        key={player.id}
+                        style={{ marginTop: index * 64 - 64 }}
+                      >
+                        <PlayerIcon player={player} side="right" />
+                      </div>
+                    ))}
+                </div>
+
+                {/* Midfielders */}
+                <div className="absolute right-32 top-1/2 transform -translate-y-1/2 space-y-6">
+                  {getPositionPlayers(teamBPlayers, "MIDFIELDERS")
+                    .slice(0, 2)
+                    .map((player, index) => (
+                      <div
+                        key={player.id}
+                        style={{ marginTop: index * 48 - 24 }}
+                      >
+                        <PlayerIcon player={player} side="right" />
+                      </div>
+                    ))}
+                </div>
+
+                {/* Forwards */}
+                <div className="absolute right-48 top-1/2 transform -translate-y-1/2 space-y-6">
+                  {getPositionPlayers(teamBPlayers, "FORWARDS")
+                    .slice(0, 2)
+                    .map((player, index) => (
+                      <div
+                        key={player.id}
+                        style={{ marginTop: index * 48 - 24 }}
+                      >
+                        <PlayerIcon player={player} side="right" />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {/* Center Line */}
+            <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-white/30 transform -translate-x-1/2"></div>
+            <div className="absolute left-1/2 top-1/2 w-24 h-24 border-2 border-white/30 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+          </div>
+        </div>
+
+        {/* Background Music Placeholder */}
+        {/* Note: Actual audio would require user interaction due to browser policies */}
+        <audio autoPlay loop className="hidden">
+          <source src="/match-music.mp3" type="audio/mpeg" />
+        </audio>
+      </div>
+    );
+  };
+
   const PlayerForm = ({ isEdit = false }: { isEdit?: boolean }) => (
     <div className="space-y-4 max-h-96 overflow-y-auto">
       <div className="grid grid-cols-2 gap-4">
