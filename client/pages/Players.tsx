@@ -408,7 +408,9 @@ export default function Players() {
       setExpandedCards(newExpanded);
     } catch (error) {
       console.error("Failed to delete player:", error);
-      setError("Failed to delete player");
+      setError(
+        `Failed to delete player: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     }
   };
 
