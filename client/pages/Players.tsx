@@ -695,7 +695,7 @@ export default function Players() {
               </Button>
             </Link>
 
-                        <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4">
               {/* Match Button */}
               <Button className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg">
                 <Trophy className="w-4 h-4 mr-2" />
@@ -704,23 +704,27 @@ export default function Players() {
 
               {/* Add Player Button - Only visible when logged in */}
               {isLoggedIn && (
-              <Dialog open={isAddPlayerOpen} onOpenChange={setIsAddPlayerOpen}>
-                <DialogTrigger asChild>
-                  <Button className="bg-gradient-to-r from-football-blue-500 to-football-maroon-500 hover:from-football-blue-600 hover:to-football-maroon-600">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Player
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
-                  <DialogHeader>
-                    <DialogTitle className="text-white">
-                      Add New Player
-                    </DialogTitle>
-                  </DialogHeader>
-                  <PlayerForm />
-                </DialogContent>
-              </Dialog>
-            )}
+                <Dialog
+                  open={isAddPlayerOpen}
+                  onOpenChange={setIsAddPlayerOpen}
+                >
+                  <DialogTrigger asChild>
+                    <Button className="bg-gradient-to-r from-football-blue-500 to-football-maroon-500 hover:from-football-blue-600 hover:to-football-maroon-600">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Player
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-black/90 border-white/20 text-white max-w-md">
+                    <DialogHeader>
+                      <DialogTitle className="text-white">
+                        Add New Player
+                      </DialogTitle>
+                    </DialogHeader>
+                    <PlayerForm />
+                  </DialogContent>
+                </Dialog>
+              )}
+            </div>
           </div>
 
           <div className="text-center space-y-4 mb-12">
