@@ -323,9 +323,12 @@ export default function Players() {
       setPlayers([...players, newPlayer]);
       setIsAddPlayerOpen(false);
       resetForm();
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error("Failed to add player:", error);
-      setError("Failed to add player");
+      setError(
+        `Failed to add player: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     }
   };
 
