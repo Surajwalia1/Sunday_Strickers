@@ -391,6 +391,27 @@ export default function Players() {
     const teamAPlayers = players.filter((p) => p.team === "Team A");
     const teamBPlayers = players.filter((p) => p.team === "Team B");
     const [hoveredPlayer, setHoveredPlayer] = useState<Player | null>(null);
+    const [animationStage, setAnimationStage] = useState<
+      "smoke" | "lightning" | "field"
+    >("smoke");
+
+    // Handle animation stages
+    useEffect(() => {
+      // Stage 1: 4 seconds of smoke
+      const smokeTimer = setTimeout(() => {
+        setAnimationStage("lightning");
+      }, 4000);
+
+      // Stage 2: Lightning clears smoke (0.5 seconds)
+      const lightningTimer = setTimeout(() => {
+        setAnimationStage("field");
+      }, 4500);
+
+      return () => {
+        clearTimeout(smokeTimer);
+        clearTimeout(lightningTimer);
+      };
+    }, []);
 
     const getPositionPlayers = (team: Player[], position: string) => {
       return team.filter((p) => p.position === position);
