@@ -175,6 +175,8 @@ export default function Players() {
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [showMatchView, setShowMatchView] = useState(false);
+  const [matchTeamFilter, setMatchTeamFilter] = useState("ALL");
 
   // Fetch players on component mount
   useEffect(() => {
