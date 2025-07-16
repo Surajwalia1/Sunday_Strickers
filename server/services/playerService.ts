@@ -14,7 +14,7 @@ export interface Player {
     | "FORWARDS"
     | "COACHING STAFF";
   positionDisplay: string;
-  team: "Team A" | "Team B";
+  team: "Team A" | "Team B" | "None";
   jerseyNumber?: string;
   photo: string;
   bio: string;
@@ -114,7 +114,7 @@ export async function deletePlayer(id: string): Promise<boolean> {
 
 // Get players by team
 export async function getPlayersByTeam(
-  team: "Team A" | "Team B",
+  team: "Team A" | "Team B" | "None",
 ): Promise<Player[]> {
   const players = await getAllPlayers();
   return players.filter((player) => player.team === team);
