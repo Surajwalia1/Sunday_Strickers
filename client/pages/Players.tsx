@@ -849,7 +849,7 @@ export default function Players() {
     );
   };
 
-    const PlayerForm = React.memo(({ isEdit = false }: { isEdit?: boolean }) => (
+  const PlayerForm = React.memo(({ isEdit = false }: { isEdit?: boolean }) => (
     <div className="space-y-4 max-h-96 overflow-y-auto">
       <div className="grid grid-cols-2 gap-4">
         <div>
@@ -1109,7 +1109,7 @@ export default function Players() {
         </Button>
       </div>
     </div>
-  );
+  ));
 
   return (
     <>
