@@ -61,7 +61,7 @@ interface Player {
     | "FORWARDS"
     | "COACHING STAFF";
   positionDisplay: string;
-  team: "Team A" | "Team B";
+  team: "Team A" | "Team B" | "None";
   jerseyNumber?: string;
   photo: string;
   bio: string;
@@ -139,7 +139,7 @@ const positions = [
   "COACHING STAFF",
 ];
 
-const teams = ["ALL", "Team A", "Team B"];
+const teams = ["ALL", "Team A", "Team B", "None"];
 
 const getGradientByPosition = (position: string) => {
   switch (position) {
@@ -855,9 +855,10 @@ export default function Players() {
           <Input
             id="firstName"
             value={formData.firstName}
-            onChange={(e) =>
-              setFormData({ ...formData, firstName: e.target.value })
-            }
+            onChange={(e) => {
+              const newValue = e.target.value;
+              setFormData((prev) => ({ ...prev, firstName: newValue }));
+            }}
             className="bg-white/10 border-white/20 text-white"
           />
         </div>
@@ -868,9 +869,10 @@ export default function Players() {
           <Input
             id="lastName"
             value={formData.lastName}
-            onChange={(e) =>
-              setFormData({ ...formData, lastName: e.target.value })
-            }
+            onChange={(e) => {
+              const newValue = e.target.value;
+              setFormData((prev) => ({ ...prev, lastName: newValue }));
+            }}
             className="bg-white/10 border-white/20 text-white"
           />
         </div>
@@ -883,9 +885,10 @@ export default function Players() {
         <Input
           id="nickname"
           value={formData.nickname}
-          onChange={(e) =>
-            setFormData({ ...formData, nickname: e.target.value })
-          }
+          onChange={(e) => {
+            const newValue = e.target.value;
+            setFormData((prev) => ({ ...prev, nickname: newValue }));
+          }}
           className="bg-white/10 border-white/20 text-white"
         />
       </div>
@@ -897,12 +900,12 @@ export default function Players() {
           </Label>
           <Select
             value={formData.position}
-            onValueChange={(value) =>
-              setFormData({
-                ...formData,
+            onValueChange={(value) => {
+              setFormData((prev) => ({
+                ...prev,
                 position: value as Player["position"],
-              })
-            }
+              }));
+            }}
           >
             <SelectTrigger className="bg-white/10 border-white/20 text-white">
               <SelectValue />
@@ -922,9 +925,12 @@ export default function Players() {
           </Label>
           <Select
             value={formData.team}
-            onValueChange={(value) =>
-              setFormData({ ...formData, team: value as Player["team"] })
-            }
+            onValueChange={(value) => {
+              setFormData((prev) => ({
+                ...prev,
+                team: value as Player["team"],
+              }));
+            }}
           >
             <SelectTrigger className="bg-white/10 border-white/20 text-white">
               <SelectValue />
@@ -932,6 +938,7 @@ export default function Players() {
             <SelectContent>
               <SelectItem value="Team A">Team A</SelectItem>
               <SelectItem value="Team B">Team B</SelectItem>
+              <SelectItem value="None">None</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -944,9 +951,10 @@ export default function Players() {
         <Input
           id="jerseyNumber"
           value={formData.jerseyNumber}
-          onChange={(e) =>
-            setFormData({ ...formData, jerseyNumber: e.target.value })
-          }
+          onChange={(e) => {
+            const newValue = e.target.value;
+            setFormData((prev) => ({ ...prev, jerseyNumber: newValue }));
+          }}
           className="bg-white/10 border-white/20 text-white"
         />
       </div>
@@ -965,7 +973,7 @@ export default function Players() {
               setSelectedFile(file);
               // Create preview URL
               const previewUrl = URL.createObjectURL(file);
-              setFormData({ ...formData, photo: previewUrl });
+              setFormData((prev) => ({ ...prev, photo: previewUrl }));
             }
           }}
           className="bg-white/10 border-white/20 text-white file:bg-football-blue-500 file:border-0 file:text-white file:rounded-md file:px-3 file:py-1 file:mr-3"
@@ -1000,7 +1008,10 @@ export default function Players() {
         <Textarea
           id="bio"
           value={formData.bio}
-          onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+          onChange={(e) => {
+            const newValue = e.target.value;
+            setFormData((prev) => ({ ...prev, bio: newValue }));
+          }}
           className="bg-white/10 border-white/20 text-white"
         />
       </div>
@@ -1014,12 +1025,10 @@ export default function Players() {
             id="appearances"
             type="number"
             value={formData.appearances}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                appearances: parseInt(e.target.value) || 0,
-              })
-            }
+            onChange={(e) => {
+              const newValue = parseInt(e.target.value) || 0;
+              setFormData((prev) => ({ ...prev, appearances: newValue }));
+            }}
             className="bg-white/10 border-white/20 text-white"
           />
         </div>
@@ -1031,9 +1040,10 @@ export default function Players() {
             id="goals"
             type="number"
             value={formData.goals}
-            onChange={(e) =>
-              setFormData({ ...formData, goals: parseInt(e.target.value) || 0 })
-            }
+            onChange={(e) => {
+              const newValue = parseInt(e.target.value) || 0;
+              setFormData((prev) => ({ ...prev, goals: newValue }));
+            }}
             className="bg-white/10 border-white/20 text-white"
           />
         </div>
@@ -1046,9 +1056,10 @@ export default function Players() {
         <Input
           id="funFact"
           value={formData.funFact}
-          onChange={(e) =>
-            setFormData({ ...formData, funFact: e.target.value })
-          }
+          onChange={(e) => {
+            const newValue = e.target.value;
+            setFormData((prev) => ({ ...prev, funFact: newValue }));
+          }}
           className="bg-white/10 border-white/20 text-white"
         />
       </div>
@@ -1060,7 +1071,10 @@ export default function Players() {
         <Input
           id="quote"
           value={formData.quote}
-          onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
+          onChange={(e) => {
+            const newValue = e.target.value;
+            setFormData((prev) => ({ ...prev, quote: newValue }));
+          }}
           className="bg-white/10 border-white/20 text-white"
         />
       </div>
@@ -1404,7 +1418,7 @@ export default function Players() {
                           <div className="grid grid-cols-3 gap-4 text-center text-white">
                             <div>
                               <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
-                                Sunday Appearances
+                                Sundays Played
                               </div>
                               <div className="text-2xl font-bold">
                                 {player.appearances}
