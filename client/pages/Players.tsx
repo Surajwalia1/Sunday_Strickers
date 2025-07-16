@@ -1429,12 +1429,6 @@ export default function Players() {
                               <div className="text-2xl font-bold">
                                 {player.appearances}
                               </div>
-                              <div className="text-xs text-white/50">
-                                2024 Season
-                              </div>
-                              <div className="text-xs text-orange-400 font-semibold">
-                                0
-                              </div>
                             </div>
 
                             {player.position === "GOALKEEPERS" ? (
@@ -1446,12 +1440,6 @@ export default function Players() {
                                   <div className="text-2xl font-bold">
                                     {player.cleanSheets || 0}
                                   </div>
-                                  <div className="text-xs text-white/50">
-                                    2024 Season
-                                  </div>
-                                  <div className="text-xs text-orange-400 font-semibold">
-                                    0
-                                  </div>
                                 </div>
                                 <div>
                                   <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
@@ -1459,12 +1447,6 @@ export default function Players() {
                                   </div>
                                   <div className="text-2xl font-bold">
                                     {player.saves || 0}
-                                  </div>
-                                  <div className="text-xs text-white/50">
-                                    2024 Season
-                                  </div>
-                                  <div className="text-xs text-orange-400 font-semibold">
-                                    0
                                   </div>
                                 </div>
                               </>
@@ -1477,24 +1459,12 @@ export default function Players() {
                                   <div className="text-2xl font-bold">
                                     {player.goals}
                                   </div>
-                                  <div className="text-xs text-white/50">
-                                    2024 Season
-                                  </div>
-                                  <div className="text-xs text-orange-400 font-semibold">
-                                    0
-                                  </div>
                                 </div>
                                 <div>
                                   <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
                                     Sunday Vibes
                                   </div>
                                   <div className="text-2xl font-bold">100</div>
-                                  <div className="text-xs text-white/50">
-                                    2024 Season
-                                  </div>
-                                  <div className="text-xs text-orange-400 font-semibold">
-                                    0
-                                  </div>
                                 </div>
                               </>
                             )}
