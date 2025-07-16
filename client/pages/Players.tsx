@@ -159,9 +159,13 @@ const getGradientByPosition = (position: string) => {
 };
 
 const getTeamColor = (team: string) => {
-  return team === "Team A"
-    ? "bg-football-blue-500/20 border-football-blue-500/40 text-football-blue-300"
-    : "bg-football-maroon-500/20 border-football-maroon-500/40 text-football-maroon-300";
+  if (team === "Team A") {
+    return "bg-football-blue-500/20 border-football-blue-500/40 text-football-blue-300";
+  } else if (team === "Team B") {
+    return "bg-football-maroon-500/20 border-football-maroon-500/40 text-football-maroon-300";
+  } else {
+    return "bg-gray-500/20 border-gray-500/40 text-gray-300";
+  }
 };
 
 export default function Players() {
@@ -1230,7 +1234,9 @@ export default function Players() {
                         ? "bg-gradient-to-r from-football-blue-500 to-football-blue-600 text-white shadow-lg"
                         : team === "Team B"
                           ? "bg-gradient-to-r from-football-maroon-500 to-football-maroon-600 text-white shadow-lg"
-                          : "bg-gradient-to-r from-football-blue-500 to-football-maroon-500 text-white shadow-lg"
+                          : team === "None"
+                            ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white shadow-lg"
+                            : "bg-gradient-to-r from-football-blue-500 to-football-maroon-500 text-white shadow-lg"
                       : "bg-white/10 backdrop-blur-md text-white/70 hover:bg-white/20 hover:text-white"
                   }`}
                 >
