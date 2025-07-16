@@ -115,7 +115,7 @@ export const handleGetPlayersByTeam = async (req: Request, res: Response) => {
   try {
     const { team } = req.params;
 
-    if (team !== "Team A" && team !== "Team B") {
+    if (team !== "Team A" && team !== "Team B" && team !== "None") {
       return res.status(400).json({ error: "Invalid team name" });
     }
 
