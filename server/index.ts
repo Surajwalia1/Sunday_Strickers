@@ -15,6 +15,7 @@ import {
 } from "./routes/players";
 import { connectToDatabase } from "./config/database";
 import { migrateFromJSONToMongoDB } from "./services/playerService";
+import { initializeStorage } from "./services/hybridPlayerService";
 
 export function createServer() {
   const app = express();
