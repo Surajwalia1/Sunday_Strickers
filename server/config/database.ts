@@ -24,7 +24,6 @@ export const connectToDatabase = async () => {
         minPoolSize: 5,
         maxIdleTimeMS: 30000,
         bufferCommands: false,
-        bufferMaxEntries: 0,
       });
       console.log("✅ Connected to MongoDB successfully");
     }
