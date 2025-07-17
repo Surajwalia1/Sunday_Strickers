@@ -5,7 +5,7 @@ import {
   addPlayer,
   updatePlayer,
   deletePlayer,
-  Player,
+  PlayerData,
 } from "../services/playerService";
 
 // GET /api/players - Get all players
