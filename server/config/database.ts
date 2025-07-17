@@ -17,9 +17,14 @@ export const connectToDatabase = async () => {
     if (mongoose.connection.readyState === 0) {
       console.log("Connecting to MongoDB...");
       await mongoose.connect(MONGODB_URI, {
-        serverSelectionTimeoutMS: 5000, // 5 second timeout
-        socketTimeoutMS: 5000,
-        connectTimeoutMS: 5000,
+        serverSelectionTimeoutMS: 30000, // 30 second timeout for Atlas
+        socketTimeoutMS: 45000,
+        connectTimeoutMS: 30000,
+        maxPoolSize: 10,
+        minPoolSize: 5,
+        maxIdleTimeMS: 30000,
+        bufferCommands: false,
+        bufferMaxEntries: 0,
       });
       console.log("✅ Connected to MongoDB successfully");
     }
