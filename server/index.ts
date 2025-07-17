@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
+import fs from "fs/promises";
 import { handleDemo } from "./routes/demo";
 import { handlePhotoUpload, handleUploadError } from "./routes/upload";
 import {
@@ -12,6 +13,8 @@ import {
   handleGetPlayersByTeam,
   handleGetPlayersByPosition,
 } from "./routes/players";
+import { connectToDatabase } from "./config/database";
+import { migrateFromJSONToMongoDB } from "./services/playerService";
 
 export function createServer() {
   const app = express();
