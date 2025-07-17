@@ -5,8 +5,10 @@ import {
   addPlayer,
   updatePlayer,
   deletePlayer,
+  getPlayersByTeam,
+  getPlayersByPosition,
   PlayerData,
-} from "../services/playerService";
+} from "../services/hybridPlayerService";
 
 // GET /api/players - Get all players
 export const handleGetAllPlayers = async (req: Request, res: Response) => {
