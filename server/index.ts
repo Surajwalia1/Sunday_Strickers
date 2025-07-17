@@ -54,6 +54,45 @@ export function createServer() {
   app.put("/api/players/:id", handleUpdatePlayer);
   app.delete("/api/players/:id", handleDeletePlayer);
 
+  // Migration route to transfer JSON data to MongoDB
+  app.post("/api/migrate-to-mongodb", async (req, res) => {
+    try {
+      const jsonPath = path.join(
+        process.cwd(),
+        "server",
+        "data",
+        "players.json",
+      );
+
+      // Check if JSON file exists
+      try {
+        await fs.access(jsonPath);
+      } catch {
+        return res
+          .status(404)
+          .json({ error: "No JSON data file found to migrate" });
+      }
+
+      // Read existing JSON data
+      const jsonData = JSON.parse(await fs.readFile(jsonPath, "utf8"));
+
+      // Migrate to MongoDB
+      await migrateFromJSONToMongoDB(jsonData);
+
+      res.json({
+        success: true,
+        message: `Successfully migrated ${jsonData.length} players to MongoDB`,
+        count: jsonData.length,
+      });
+    } catch (error) {
+      console.error("Migration error:", error);
+      res.status(500).json({
+        error: "Failed to migrate data to MongoDB",
+        details: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
+  });
+
   // Error handling middleware for uploads
   app.use(handleUploadError);
 
