@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: sunday-game-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: sunday-game
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongodb-init:/docker-entrypoint-initdb.d
+    networks:
+      - sunday-game-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  sunday-game-network:
+    driver: bridge
