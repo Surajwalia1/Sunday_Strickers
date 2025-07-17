@@ -20,9 +20,9 @@ import { initializeStorage } from "./services/hybridPlayerService";
 export function createServer() {
   const app = express();
 
-  // Initialize MongoDB connection
-  connectToDatabase().catch((error) => {
-    console.error("Failed to connect to MongoDB:", error);
+  // Initialize storage (MongoDB with JSON fallback)
+  initializeStorage().catch((error) => {
+    console.error("Storage initialization warning:", error);
   });
 
   // Middleware
