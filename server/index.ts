@@ -19,6 +19,11 @@ import { migrateFromJSONToMongoDB } from "./services/playerService";
 export function createServer() {
   const app = express();
 
+  // Initialize MongoDB connection
+  connectToDatabase().catch((error) => {
+    console.error("Failed to connect to MongoDB:", error);
+  });
+
   // Middleware
   app.use(cors());
   app.use(express.json());
