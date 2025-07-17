@@ -1,7 +1,16 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
 
 const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost:27017/sunday-game";
+
+console.log(
+  "MongoDB URI configured:",
+  MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, "//***:***@"),
+); // Log URI without credentials
 
 export const connectToDatabase = async () => {
   try {
