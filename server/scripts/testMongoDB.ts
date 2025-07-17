@@ -67,7 +67,7 @@ async function testMongoDBOperations() {
 
 // Run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  testMongoDB();
+  testMongoDBOperations();
 }
 
 export { testMongoDBOperations };
