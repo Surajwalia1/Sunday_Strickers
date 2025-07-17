@@ -1,8 +1,8 @@
-import fs from "fs/promises";
-import path from "path";
+import { Player, IPlayer } from "../models/Player";
+import { connectToDatabase } from "../config/database";
 
-export interface Player {
-  id: string;
+export interface PlayerData {
+  id?: string;
   name: string;
   firstName: string;
   lastName: string;
@@ -26,104 +26,153 @@ export interface Player {
   quote: string;
 }
 
-const DATA_FILE = path.join(process.cwd(), "server", "data", "players.json");
+// Ensure database connection before operations
+const ensureConnection = async () => {
+  await connectToDatabase();
+};
 
-// Ensure data directory exists
-async function ensureDataDirectory() {
-  const dataDir = path.dirname(DATA_FILE);
+// Get all players
+export async function getAllPlayers(): Promise<PlayerData[]> {
   try {
-    await fs.access(dataDir);
-  } catch {
-    await fs.mkdir(dataDir, { recursive: true });
-  }
-}
-
-// Read players from file
-export async function getAllPlayers(): Promise<Player[]> {
-  try {
-    await ensureDataDirectory();
-    const data = await fs.readFile(DATA_FILE, "utf8");
-    return JSON.parse(data);
+    await ensureConnection();
+    const players = await Player.find({}).sort({ createdAt: 1 });
+    return players.map((player) => player.toJSON() as PlayerData);
   } catch (error) {
-    console.error("Error reading players data:", error);
-    return [];
-  }
-}
-
-// Write players to file
-async function savePlayers(players: Player[]): Promise<void> {
-  try {
-    await ensureDataDirectory();
-    await fs.writeFile(DATA_FILE, JSON.stringify(players, null, 2));
-  } catch (error) {
-    console.error("Error saving players data:", error);
-    throw error;
+    console.error("Error fetching players:", error);
+    throw new Error("Failed to fetch players from database");
   }
 }
 
 // Get player by ID
-export async function getPlayerById(id: string): Promise<Player | null> {
-  const players = await getAllPlayers();
-  return players.find((player) => player.id === id) || null;
+export async function getPlayerById(id: string): Promise<PlayerData | null> {
+  try {
+    await ensureConnection();
+    const player = await Player.findById(id);
+    return player ? (player.toJSON() as PlayerData) : null;
+  } catch (error) {
+    console.error("Error fetching player by ID:", error);
+    throw new Error("Failed to fetch player from database");
+  }
 }
 
 // Add new player
 export async function addPlayer(
-  playerData: Omit<Player, "id">,
-): Promise<Player> {
-  const players = await getAllPlayers();
-  const newPlayer: Player = {
-    ...playerData,
-    id: Date.now().toString(),
-  };
+  playerData: Omit<PlayerData, "id">,
+): Promise<PlayerData> {
+  try {
+    await ensureConnection();
 
-  players.push(newPlayer);
-  await savePlayers(players);
-  return newPlayer;
+    // Ensure positionDisplay is set correctly
+    if (!playerData.positionDisplay) {
+      playerData.positionDisplay = playerData.position
+        .toLowerCase()
+        .replace("_", " ");
+    }
+
+    const newPlayer = new Player(playerData);
+    const savedPlayer = await newPlayer.save();
+    return savedPlayer.toJSON() as PlayerData;
+  } catch (error) {
+    console.error("Error adding player:", error);
+    if (error instanceof Error) {
+      throw new Error(`Failed to add player: ${error.message}`);
+    }
+    throw new Error("Failed to add player to database");
+  }
 }
 
 // Update existing player
 export async function updatePlayer(
   id: string,
-  playerData: Partial<Player>,
-): Promise<Player | null> {
-  const players = await getAllPlayers();
-  const playerIndex = players.findIndex((player) => player.id === id);
+  playerData: Partial<PlayerData>,
+): Promise<PlayerData | null> {
+  try {
+    await ensureConnection();
 
-  if (playerIndex === -1) {
-    return null;
+    // Ensure positionDisplay is updated if position changes
+    if (playerData.position && !playerData.positionDisplay) {
+      playerData.positionDisplay = playerData.position
+        .toLowerCase()
+        .replace("_", " ");
+    }
+
+    const updatedPlayer = await Player.findByIdAndUpdate(
+      id,
+      { ...playerData, updatedAt: new Date() },
+      { new: true, runValidators: true },
+    );
+
+    return updatedPlayer ? (updatedPlayer.toJSON() as PlayerData) : null;
+  } catch (error) {
+    console.error("Error updating player:", error);
+    if (error instanceof Error) {
+      throw new Error(`Failed to update player: ${error.message}`);
+    }
+    throw new Error("Failed to update player in database");
   }
-
-  players[playerIndex] = { ...players[playerIndex], ...playerData, id };
-  await savePlayers(players);
-  return players[playerIndex];
 }
 
 // Delete player
 export async function deletePlayer(id: string): Promise<boolean> {
-  const players = await getAllPlayers();
-  const filteredPlayers = players.filter((player) => player.id !== id);
-
-  if (filteredPlayers.length === players.length) {
-    return false; // Player not found
+  try {
+    await ensureConnection();
+    const result = await Player.findByIdAndDelete(id);
+    return result !== null;
+  } catch (error) {
+    console.error("Error deleting player:", error);
+    throw new Error("Failed to delete player from database");
   }
-
-  await savePlayers(filteredPlayers);
-  return true;
 }
 
 // Get players by team
 export async function getPlayersByTeam(
   team: "Team A" | "Team B" | "None",
-): Promise<Player[]> {
-  const players = await getAllPlayers();
-  return players.filter((player) => player.team === team);
+): Promise<PlayerData[]> {
+  try {
+    await ensureConnection();
+    const players = await Player.find({ team }).sort({ createdAt: 1 });
+    return players.map((player) => player.toJSON() as PlayerData);
+  } catch (error) {
+    console.error("Error fetching players by team:", error);
+    throw new Error("Failed to fetch team players from database");
+  }
 }
 
 // Get players by position
 export async function getPlayersByPosition(
-  position: Player["position"],
-): Promise<Player[]> {
-  const players = await getAllPlayers();
-  return players.filter((player) => player.position === position);
+  position: PlayerData["position"],
+): Promise<PlayerData[]> {
+  try {
+    await ensureConnection();
+    const players = await Player.find({ position }).sort({ createdAt: 1 });
+    return players.map((player) => player.toJSON() as PlayerData);
+  } catch (error) {
+    console.error("Error fetching players by position:", error);
+    throw new Error("Failed to fetch position players from database");
+  }
+}
+
+// Migration function to import existing JSON data to MongoDB
+export async function migrateFromJSONToMongoDB(
+  jsonData: PlayerData[],
+): Promise<void> {
+  try {
+    await ensureConnection();
+
+    // Clear existing data
+    await Player.deleteMany({});
+
+    // Insert JSON data
+    for (const playerData of jsonData) {
+      const { id, ...dataWithoutId } = playerData;
+      await addPlayer(dataWithoutId);
+    }
+
+    console.log(
+      `✅ Successfully migrated ${jsonData.length} players to MongoDB`,
+    );
+  } catch (error) {
+    console.error("Error migrating data:", error);
+    throw new Error("Failed to migrate data to MongoDB");
+  }
 }
