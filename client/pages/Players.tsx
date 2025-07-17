@@ -517,7 +517,7 @@ export default function Players() {
 
     return (
       <div className="fixed inset-0 z-50 bg-black overflow-hidden">
-        {/* Stage 1: Smokey Entrance Animation (4 seconds) */}
+        {/* Stage 1: Smokey Entrance Animation with Football Kicking (4 seconds) */}
         {animationStage === "smoke" && (
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 animate-pulse"></div>
@@ -529,8 +529,45 @@ export default function Players() {
             <div className="absolute top-3/4 right-1/4 w-48 h-48 bg-gray-700/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
             <div className="absolute bottom-1/4 left-1/3 w-24 h-24 bg-gray-500/50 rounded-full blur-2xl animate-pulse delay-2000"></div>
 
-            {/* Dramatic text */}
+            {/* Animated Football Kicking Scene */}
             <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative w-96 h-96">
+                {/* Goal Posts */}
+                <div className="absolute right-8 bottom-16 w-16 h-20 border-l-4 border-t-4 border-r-4 border-white/60"></div>
+
+                {/* Cartoon Player */}
+                <div className="absolute bottom-20 left-8 transform animate-bounce">
+                  {/* Player Body */}
+                  <div className="relative">
+                    {/* Head */}
+                    <div className="w-8 h-8 bg-yellow-300 rounded-full mb-1 mx-auto"></div>
+                    {/* Body */}
+                    <div className="w-6 h-12 bg-blue-500 rounded-lg mx-auto mb-1"></div>
+                    {/* Legs (kicking motion) */}
+                    <div className="flex justify-center space-x-1">
+                      <div className="w-2 h-8 bg-blue-600 rounded transform -rotate-12 animate-pulse"></div>
+                      <div className="w-2 h-8 bg-blue-600 rounded transform rotate-45 animate-pulse delay-150"></div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Football */}
+                <div className="absolute bottom-24 left-20 transform transition-all duration-1000 animate-ping">
+                  <div className="relative">
+                    <div className="w-6 h-4 bg-orange-600 rounded-full transform rotate-12"></div>
+                    <div className="absolute inset-0 w-6 h-4 border border-white/40 rounded-full transform rotate-12"></div>
+                  </div>
+                </div>
+
+                {/* Ball Trail Animation */}
+                <div className="absolute bottom-24 left-20 w-32 h-1 opacity-50">
+                  <div className="h-full bg-gradient-to-r from-orange-400 to-transparent animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dramatic text */}
+            <div className="absolute bottom-20 left-0 right-0 flex items-center justify-center">
               <div className="text-center">
                 <h1 className="text-6xl font-black text-white/80 animate-pulse mb-4">
                   THE MATCH
@@ -1462,7 +1499,7 @@ export default function Players() {
                                 </div>
                                 <div>
                                   <div className="text-xs text-white/60 uppercase tracking-wider mb-1">
-                                    Sunday Vibes
+                                    Love
                                   </div>
                                   <div className="text-2xl font-bold">100</div>
                                 </div>
@@ -1503,6 +1540,21 @@ export default function Players() {
                         {/* Expanded Content */}
                         {expandedCards.has(player.id) && (
                           <div className="space-y-4 pt-4 border-t border-white/10 animate-in slide-in-from-top-2 duration-300">
+                            {/* Player Nickname */}
+                            {player.nickname && (
+                              <div className="p-3 bg-football-blue-500/20 rounded-lg border border-football-blue-500/30">
+                                <div className="flex items-center space-x-2 mb-2">
+                                  <span className="text-2xl">🏷️</span>
+                                  <span className="font-medium text-football-blue-300">
+                                    Nickname
+                                  </span>
+                                </div>
+                                <p className="text-football-blue-200 text-sm font-semibold">
+                                  "{player.nickname}"
+                                </p>
+                              </div>
+                            )}
+
                             <p className="text-white/70 leading-relaxed">
                               {player.bio}
                             </p>
