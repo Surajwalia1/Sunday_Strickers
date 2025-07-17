@@ -1,7 +1,11 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import path from "path";
 import fs from "fs/promises";
+
+// Load environment variables first
+dotenv.config();
 import { handleDemo } from "./routes/demo";
 import { handlePhotoUpload, handleUploadError } from "./routes/upload";
 import {
