@@ -139,7 +139,7 @@ const positions = [
   "COACHING STAFF",
 ];
 
-const teams = ["ALL", "Team A", "Team B", "None"];
+const teams = ["ALL", "Tharki Tigers", "Nange Shikari", "None"];
 
 const getGradientByPosition = (position: string) => {
   switch (position) {
