@@ -20,7 +20,7 @@ async function testMongoDBOperations() {
       nickname: "Tester",
       position: "MIDFIELDERS",
       positionDisplay: "midfielders",
-      team: "Team A",
+      team: "Tharki Tigers",
       jerseyNumber: "99",
       photo: "https://via.placeholder.com/400x500",
       bio: "This is a test player for MongoDB verification",
