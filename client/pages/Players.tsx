@@ -1010,8 +1010,8 @@ export default function Players() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Team A">Team A</SelectItem>
-              <SelectItem value="Team B">Team B</SelectItem>
+              <SelectItem value="Tharki Tigers">Tharki Tigers</SelectItem>
+              <SelectItem value="Nange Shikari">Nange Shikari</SelectItem>
               <SelectItem value="None">None</SelectItem>
             </SelectContent>
           </Select>
