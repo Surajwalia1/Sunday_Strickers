@@ -185,7 +185,7 @@ export default function Players() {
     lastName: "",
     nickname: "",
     position: "FORWARDS" as Player["position"],
-    team: "Team A" as Player["team"],
+    team: "Tharki Tigers" as Player["team"],
     jerseyNumber: "",
     photo:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&crop=face",
