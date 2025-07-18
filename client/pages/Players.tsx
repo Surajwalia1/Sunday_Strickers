@@ -159,9 +159,9 @@ const getGradientByPosition = (position: string) => {
 };
 
 const getTeamColor = (team: string) => {
-  if (team === "Team A") {
+  if (team === "Tharki Tigers") {
     return "bg-football-blue-500/20 border-football-blue-500/40 text-football-blue-300";
-  } else if (team === "Team B") {
+  } else if (team === "Nange Shikari") {
     return "bg-football-maroon-500/20 border-football-maroon-500/40 text-football-maroon-300";
   } else {
     return "bg-gray-500/20 border-gray-500/40 text-gray-300";
