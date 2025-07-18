@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/sunday-game";
+  process.env.MONGODB_URI || "mongodb+srv://surajwalia21cse:mNi6hrR49SlsIDsz@cluster2.vj32q.mongodb.net/sunday-game?retryWrites=true&w=majority";
 
 console.log(
   "MongoDB URI configured:",
