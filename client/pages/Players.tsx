@@ -703,7 +703,7 @@ export default function Players() {
                 <div className="absolute left-0 top-0 w-1/2 h-full">
                   <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
                     <h2 className="text-2xl font-bold text-blue-400 animate-in fade-in slide-in-from-left duration-1000">
-                      Team A
+                      Tharki Tigers
                     </h2>
                   </div>
 
