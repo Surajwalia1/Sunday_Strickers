@@ -114,7 +114,7 @@ export async function deletePlayer(id: string): Promise<boolean> {
 
 // Get players by team
 export async function getPlayersByTeam(
-  team: "Team A" | "Team B" | "None",
+  team: "Tharki Tigers" | "Nange Shikari" | "None",
 ): Promise<PlayerData[]> {
   const players = await getAllPlayers();
   return players.filter((player) => player.team === team);
