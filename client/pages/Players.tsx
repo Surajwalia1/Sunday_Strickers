@@ -676,7 +676,7 @@ export default function Players() {
         {/* Team Filter - Only show in field stage */}
         {animationStage === "field" && (
           <div className="absolute top-6 right-6 z-20 flex space-x-2">
-            {["ALL", "Team A", "Team B"].map((filter) => (
+            {["ALL", "Tharki Tigers", "Nange Shikari"].map((filter) => (
               <Button
                 key={filter}
                 onClick={() => setMatchTeamFilter(filter)}
