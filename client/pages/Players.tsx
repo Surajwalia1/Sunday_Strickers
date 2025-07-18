@@ -802,8 +802,9 @@ export default function Players() {
                 </div>
               )}
 
-              {/* Team B (Right Side) - Mirror formation */}
-              {(matchTeamFilter === "ALL" || matchTeamFilter === "Team B") && (
+              {/* Nange Shikari (Right Side) - Mirror formation */}
+              {(matchTeamFilter === "ALL" ||
+                matchTeamFilter === "Nange Shikari") && (
                 <div className="absolute right-0 top-0 w-1/2 h-full">
                   <div className="absolute top-4 right-1/2 transform translate-x-1/2">
                     <h2 className="text-2xl font-bold text-red-400 animate-in fade-in slide-in-from-right duration-1000">
