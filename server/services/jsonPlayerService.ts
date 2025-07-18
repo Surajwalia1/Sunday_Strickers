@@ -14,7 +14,7 @@ export interface PlayerData {
     | "FORWARDS"
     | "COACHING STAFF";
   positionDisplay: string;
-  team: "Team A" | "Team B" | "None";
+  team: "Tharki Tigers" | "Nange Shikari" | "None";
   jerseyNumber?: string;
   photo: string;
   bio: string;
