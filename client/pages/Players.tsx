@@ -433,8 +433,8 @@ export default function Players() {
 
   // Match View Component
   const MatchView = () => {
-    const teamAPlayers = players.filter((p) => p.team === "Team A");
-    const teamBPlayers = players.filter((p) => p.team === "Team B");
+    const teamAPlayers = players.filter((p) => p.team === "Tharki Tigers");
+    const teamBPlayers = players.filter((p) => p.team === "Nange Shikari");
     const [hoveredPlayer, setHoveredPlayer] = useState<Player | null>(null);
     const [animationStage, setAnimationStage] = useState<
       "smoke" | "lightning" | "field"
