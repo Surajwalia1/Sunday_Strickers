@@ -67,7 +67,7 @@ const PlayerSchema: Schema<IPlayer> = new Schema(
     team: {
       type: String,
       required: true,
-      enum: ["Team A", "Team B", "None"],
+      enum: ["Tharki Tigers", "Nange Shikari", "None"],
       default: "None",
     },
     jerseyNumber: {
