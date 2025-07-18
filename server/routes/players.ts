@@ -117,7 +117,11 @@ export const handleGetPlayersByTeam = async (req: Request, res: Response) => {
   try {
     const { team } = req.params;
 
-    if (team !== "Team A" && team !== "Team B" && team !== "None") {
+    if (
+      team !== "Tharki Tigers" &&
+      team !== "Nange Shikari" &&
+      team !== "None"
+    ) {
       return res.status(400).json({ error: "Invalid team name" });
     }
 
