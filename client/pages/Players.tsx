@@ -1300,9 +1300,9 @@ export default function Players() {
                   onClick={() => setSelectedTeam(team)}
                   className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
                     selectedTeam === team
-                      ? team === "Team A"
+                      ? team === "Tharki Tigers"
                         ? "bg-gradient-to-r from-football-blue-500 to-football-blue-600 text-white shadow-lg"
-                        : team === "Team B"
+                        : team === "Nange Shikari"
                           ? "bg-gradient-to-r from-football-maroon-500 to-football-maroon-600 text-white shadow-lg"
                           : team === "None"
                             ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white shadow-lg"
